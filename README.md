@@ -88,14 +88,14 @@ Hinted messages that are not caught will be emitted as `message`.
 
 You can receive replies to your messages by specifying anonymous handlers:
 
-    node.emit('planet-express/bender',beer).on('reply',function(money){
+    node.emit('planet-express/bender',beer).on('#reply',function(money){
         // thanks for the money bender!
     });
 
 A receiver can reply to messages by catching a reference to the sender in the handler:
 
     node.on('message',function(message,sender){
-        sender.emit('THANK YOU');
+        sender.emit('#reply','THANK YOU');
     });
 
 # Specification
