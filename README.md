@@ -117,6 +117,13 @@ The specification contains the technical details of the project.
 - federation uses the Axon PubEmitter / SubEmitter socket
 - default port: 8973
 
+## Design
+
+Each Node.js process runs a Federation Hub that communicates across the network with other Hubs.
+A Hub helps route messages between processes.
+
+![Overview of Federation Network](https://raw.github.com/jacobgroundwater/federation/assets/export/overview.png)
+
 # Future Features
 
 The following are features that _may_ be cool in a beta release,
