@@ -29,7 +29,7 @@ modify your modules to join the federation.
 
     $ npm install --save federation
 
-**server.js**
+In your *server.js* file add:
 
     var fed  = require('federation').join('axon://10.0.1.1');
     var node = fed.node(options);
@@ -39,12 +39,14 @@ who can send and receive messages to other nodes.
 
 # Usage
 
-A federation operates like an event-emitter:
+A federation node operates like an event-emitter.
+
+_Send a message:_
 
     var launch_code = "12345puppy";
     node.emit('president',launch_code);
 
-The message recipient registers to obtain the message with:
+_Receive a message:_
 
     node.on('message',function(message){
         launch_the_missiles(message);
@@ -52,28 +54,28 @@ The message recipient registers to obtain the message with:
 
 ## Address Space
 
-Every emitted message is sent to an address on the network.
-Addresses look like both absolute an relative paths.
+Messages are sent to address that look like paths,
+both absolute and relative.
 
-- absolute path - `//america/whitehouse/president`
+- absolute path - `/america/whitehouse/president`
 - relative path - `vice-president`
 
 Relative paths are resolved to an absolute path based on the address of the sender.
 
     # given the following addresses
-    //canada/parliament/prime-minister <-- node A
-    //canada/parliament/house-speaker  <-- node B
+    /canada/parliament/prime-minister <-- node A
+    /canada/parliament/house-speaker  <-- node B
     
     # node A can message node B with the address `house-speaker`
 
 ## Message Handlers
 
-Emitted messages hint their type using a hash-tag (`#`).
+Emitted messages can hint at the type of message using a hash-tag (`#`).
 Nodes can choose to handle messages according to their hinted type.
 
     node.emit('planet-express/fry#package',package);
 
-The receiving node will be resolved to `fry`.
+The receiving node is `planet-express/fry`.
 Fry can catch that message with:
 
     node.on('#package',function(package){
