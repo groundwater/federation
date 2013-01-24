@@ -98,6 +98,18 @@ A receiver can reply to messages by catching a reference to the sender in the ha
         sender.emit('#reply','THANK YOU');
     });
 
+#### Handling Errors
+
+Multiple anonymous handlers can be registered to the same transaction:
+
+    node.emit('bender#kill-all-humans',message)
+    .on('#reply',function(reply){
+      // handle reply
+    })
+    .on('#error',function(err){
+      // handle error
+    });
+
 # Specification
 
 The specification contains the technical details of the project.
