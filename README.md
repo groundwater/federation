@@ -1,4 +1,4 @@
- # Introduction
+# Introduction
 
 > Federation is a federated event emitter
 
