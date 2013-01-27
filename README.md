@@ -43,7 +43,7 @@ Nodes can message other nodes with their address:
 For nodes on the same host, the hostname may be omitted, or replaced with `0.0.0.0`:
 
     node1.send("/node2",        message);
-    node1.send("0.0.0.0/node2", message);
+    node1.send("//0.0.0.0/node2", message);
 
 ## Receive Messages
 
