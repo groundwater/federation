@@ -25,25 +25,24 @@ Federation is a peer-to-peer messaging network with no central server.
     var node2 = fed.ndoe('node2');
 
 Federation nodes can send and receive messages to each other.
-Each node on the network has an address in the form of a protocol-less URL.
+Each node on the network exists at a fully-qualified URL.
 Assume the above script is running on host `192.168.0.23`,
 then `node1` and `node2` had the respective addresses:
 
-    //192.168.0.23/node1
-    //192.168.0.23/node2
+    fed://192.168.0.23/node1
+    fed://192.168.0.23/node2
 
 ## Send a Message
 
 Nodes can message other nodes with their address:
 
     var message = "Hello World";
-    var address = "//192.168.0.23/node2";
+    var address = "fed://192.168.0.23/node2";
     node1.send(address,message);
 
-For nodes on the same host, the hostname may be omitted, or replaced with `0.0.0.0`:
+For nodes on the same host, the hostname may be omitted:
 
-    node1.send("/node2",        message);
-    node1.send("//0.0.0.0/node2", message);
+    node1.send("/node2", message);
 
 ## Receive Messages
 
@@ -60,3 +59,13 @@ The default mailbox is called `message` however other mailboxes can be used with
     })
     node1.send('/node2#hello',message);
 
+# Specification
+
+- the `fed://` protocol refers to whatever the default protocol will be, perhaps `axon://`
+- any protocol can be supported via a `Protocol` interface
+- local references are delivered locally, and bypass the any protocol interfaces
+
+## Future Features
+
+- location-independent names will be supported via bang-syntax `!name`
+- the request-reply pattern will be applied via _anonymous actors_
