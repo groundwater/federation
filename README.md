@@ -13,115 +13,50 @@ that lets any two nodes in the federation send routed messages to one and other.
 
 # Install
 
-### Running a Federation Base Server
-
-All federations require a base server.
-Base servers are zero-configuration:
-
-    $ npm install -g federation
-    $ federation start
-    Federation Base Started at axon://10.0.1.1
-
-### Joining a Federation
-
-Once a base server is established,
-modify your modules to join the federation.
-
-    $ npm install --save federation
-
-In your *server.js* file add:
-
-    var fed  = require('federation').join('axon://10.0.1.1');
-    var node = fed.node(options);
-
-The above `node` object is a citizen of the network,
-who can send and receive messages to other nodes.
+    $ npm install federation
 
 # Usage
 
-A federation node operates like an event-emitter.
+Federation is a peer-to-peer messaging network with no central server.
 
-_Send a message:_
-
-    var launch_code = "12345puppy";
-    node.emit('president',launch_code);
-
-_Receive a message:_
-
-    node.on('message',function(message){
-        launch_the_missiles(message);
-    });
-
-## Address Space
-
-Messages are sent to address that look like paths,
-both absolute and relative.
-
-- absolute path - `/america/whitehouse/president`
-- relative path - `vice-president`
-
-Relative paths are resolved to an absolute path based on the address of the sender.
-
-    # given the following addresses
-    /canada/parliament/prime-minister <-- node A
-    /canada/parliament/house-speaker  <-- node B
+    var fed   = require('federation');
     
-    # node A can message node B with the address `house-speaker`
+    var node1 = fed.node('node1');
+    var node2 = fed.ndoe('node2');
 
-## Message Handlers
+Federation nodes can send and receive messages to each other.
+Each node on the network has an address in the form of a protocol-less URL.
+Assume the above script is running on host `192.168.0.23`,
+then `node1` and `node2` had the respective addresses:
 
-Emitted messages can hint at the type of message using a hash-tag (`#`).
-Nodes can choose to handle messages according to their hinted type.
+    //192.168.0.23/node1
+    //192.168.0.23/node2
 
-    node.emit('planet-express/fry#package',package);
+## Send a Message
 
-The receiving node is `planet-express/fry`.
-Fry can catch that message with:
+Nodes can message other nodes with their address:
 
-    node.on('#package',function(package){
-        put_in_spaceship(package);
-    });
+    var message = "Hello World";
+    var address = "//192.168.0.23/node2";
+    node1.send(address,message);
 
-Hinted messages that are not caught will be emitted as `message`.
+For nodes on the same host, the hostname may be omitted, or replaced with `0.0.0.0`:
 
-### Anonymous Handlers
+    node1.send("/node2",        message);
+    node1.send("0.0.0.0/node2", message);
 
-You can receive replies to your messages by specifying anonymous handlers:
+## Receive Messages
 
-    node.emit('planet-express/bender',beer).on('#reply',function(money){
-        // thanks for the money bender!
-    });
+Nodes receive messages to mailboxes which can have handlers:
 
-A receiver can reply to messages by catching a reference to the sender in the handler:
-
-    node.on('message',function(message,sender){
-        sender.emit('#reply','THANK YOU');
-    });
-
-#### Handling Errors
-
-Multiple anonymous handlers can be registered to the same transaction:
-
-    node.emit('bender#kill-all-humans',message)
-    .on('#reply',function(reply){
-      // handle reply
+    node1.on('message',function(message){
+      // handle message
     })
-    .on('#error',function(err){
-      // handle error
-    });
 
-# Specification
+The default mailbox is called `message` however other mailboxes can be used with the hash `#` syntax:
 
-The specification contains the technical details of the project.
-
-- federation uses the Axon PubEmitter / SubEmitter socket
-- default port: 8973
-
-# Future Features
-
-The following are features that _may_ be cool in a beta release,
-but are not planned for the alpha.
-
-- broadcast / multicast addresses
-- multiple addresses
+    node2.on('#hello',function(message){
+      // handle message
+    })
+    node1.send('/node2#hello',message);
 
