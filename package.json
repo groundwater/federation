@@ -6,10 +6,17 @@
   "repository": "",
   "author": "Jacob Groundwater",
   "license": "MIT",
-  "bin":{
+  "bin": {
     "federation": "bin/federation.js"
   },
   "dependencies": {
     "axon": "~0.5.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.1",
+    "sinon": "~1.5.2"
+  },
+  "scripts": {
+    "test": "mocha test"
   }
 }
