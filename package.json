@@ -1,14 +1,11 @@
 {
   "name": "federation",
-  "version": "0.0.0",
-  "description": "Node Message Network",
+  "version": "0.0.1",
+  "description": "Federated Node Message Network",
   "main": "index.js",
   "repository": "",
   "author": "Jacob Groundwater",
   "license": "MIT",
-  "bin": {
-    "federation": "bin/federation.js"
-  },
   "dependencies": {
     "axon": "~0.5.0"
   },
