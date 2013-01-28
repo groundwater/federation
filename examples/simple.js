@@ -1,11 +1,11 @@
 var hub = require('../index');
 
 var gateway  = hub.gateway;
-var switcher = hub.switcher;
+var router = hub.router;
 
-var tim = switcher.createNode('tim');
-var bob = switcher.createNode('bob');
-var tom = switcher.createNode('tom');
+var tim = router.createNode('tim');
+var bob = router.createNode('bob');
+var tom = router.createNode('tom');
 
 tom.receive = function(message){
   console.log('Tom is Passing a Message to Tim');
