@@ -1,15 +1,6 @@
 # Introduction
 
-> Federation is a federated event emitter
-
-Federation is a messaging network built on top of Axon,
-that lets any two nodes in the federation send routed messages to one and other.
-
-# Goals
-
-- fault tolerance
-- zero-configuration setup
-- minimal and familiar api
+Federation is an actor system for Node.js inspired by Erlang and Akka.
 
 # Install
 
