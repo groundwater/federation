@@ -2,7 +2,7 @@ var url       = require('url');
 var events    = require('events');
 
 var node      = require('./lib/node');
-var router  = require('./lib/router');
+var router    = require('./lib/router');
 var gateway   = require('./lib/gateway');
 var transport = require('./lib/transport');
 var hub       = require('./lib/hub');
@@ -11,7 +11,7 @@ var app = {}
 
 app.Node      = node      .forge(app);
 app.Transport = transport .forge(app);
-app.Router  = router  .forge(app);
+app.Router    = router  .forge(app);
 app.Gateway   = gateway   .forge(app);
 app.Hub       = hub       .forge(app);
 
