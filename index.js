@@ -1,45 +1,35 @@
-var axon       = require('axon');
+var url       = require('url');
+var events    = require('events');
 
-var Node       = require('./lib/node');
-var Hub        = require('./lib/hub');
-var Socket     = require('./lib/socket');
+var node      = require('./lib/node');
+var switcher  = require('./lib/switcher');
+var gateway   = require('./lib/gateway');
+var transport = require('./lib/transport');
+var hub       = require('./lib/hub');
 
-// Dependency Container
-var app        = {};
+var app = {}
 
-// Internal Dependencies
-app.Socket     = Socket    .inject(app);
-app.Node       = Node      .inject(app);
-app.Hub        = Hub       .inject(app);
+app.Node      = node      .forge(app);
+app.Transport = transport .forge(app);
+app.Switcher  = switcher  .forge(app);
+app.Gateway   = gateway   .forge(app);
+app.Hub       = hub       .forge(app);
 
-// Bind Defaults
-var PORT       = process.env.PORT || 8973;
-var ADDR       = process.env.HOST || '0.0.0.0';
-
-// Bootup!
-module.exports.join = function(url){
-    
-  console.log('Federation Joined to %s',url);
+function init(){
   
-  // External Dependencies
-  var send       = axon.socket('pub-emitter');
-  var recv       = axon.socket('sub-emitter');
+  var transport_emitter = new events.EventEmitter();
+  var nodes_emitter     = new events.EventEmitter();
   
-  // Connect AXON Ports
-  // 
-  // **Note**
-  //
-  // This should be the _only_ coupling with axon that should exist. 
-  // We do **not** require the axon module anywhere else
-  send.connect(url);
-  recv.bind(PORT,ADDR);
+  var hub = app.Hub.NewWithEmitters(transport_emitter,nodes_emitter);
   
-  // Initialize Socket Interface
-  var socket = app.Socket.NewFromSendRecv(send,recv);
+  var gateway  = hub.createGateway();
+  var switcher = hub.createSwitcher();
   
-  // Initialize Hub Interface
-  var hub    = app.Hub.NewFromSocket(socket);
+  // Create a Loopback Interface for Protocol-less Addresses
+  var loopback = gateway.createTransport();
+  loopback.enqueue = loopback.receive;
   
   return hub;
-
 }
+
+module.exports = init();
