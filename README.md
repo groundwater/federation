@@ -17,14 +17,12 @@ that lets any two nodes in the federation send routed messages to one and other.
 
 # Usage
 
-Federation is a peer-to-peer messaging network with no central server.
+Federation nodes can send and receive messages to each other.
 
     var router = require('federation').router;
     
     var node1  = router.createNode('node1');
     var node2  = router.createNode('node2');
-
-Federation nodes can send and receive messages to each other.
 
 ## Send a Message
 
