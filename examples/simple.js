@@ -13,7 +13,8 @@ tom.receive = function(message){
 }
 
 tim.receive = function(message){
-  console.log('Tim got Message %s',message);
+  console.log('Tim Got Message %s',message);
 }
 
+console.log('Bob is Sending a Message to Tom');
 bob.tell('/tom','hello!');
