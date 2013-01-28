@@ -1,22 +1,23 @@
-var federation = require('../index');
-var hub        = federation.join('tcp://127.0.0.1:8973');
+var gateway = require('../lib/gateway');
+var hub     = require('../lib/hub');
+var node    = require('../lib/node');
+var payload = require('../lib/payload');
+var switchr = require('../lib/switch');
 
-// Receiver Node //
-var node_recv  = hub.node({
-  name: 'demo'
-});
-node_recv.on('message',function(message){
-  console.log('--> Message Received',message);
-});
-node_recv.on('hi',function(message){
-  console.log('[HI] -->',message);
-})
+var app     = {};
 
-// Sender Node //
-var node_send  = hub.node({
-  name: 'help'
-})
+app.Payload = payload .forge(app);
+app.Node    = node    .forge(app);
+app.Hub     = hub     .forge(app);
+app.Gateway = gateway .forge(app);
+app.Switchr = switchr .forge(app);
 
-setTimeout(function(){
-  node_send.emit('demo#hi','hello-world');
-},1000);
+(function(){
+  var gateway = app.Gateway.New();
+  var switchr = app.Switchr.New();
+  var hub     = app.Hub.NewCase(gateway,switchr);
+  var node1   = hub.node('hi');
+  
+  node1.emit('','hi');
+  
+})()
