@@ -1,7 +1,6 @@
 var hub = require('../index');
 
-var gateway  = hub.gateway;
-var router = hub.router;
+var router  = hub.router;
 
 var tim = router.createNode('tim');
 var bob = router.createNode('bob');
