@@ -17,17 +17,16 @@ app.Hub       = hub       .forge(app);
 
 function init(){
   
-  var transport_emitter = new events.EventEmitter();
-  var nodes_emitter     = new events.EventEmitter();
+  var outbox = new events.EventEmitter();
+  var inbox  = new events.EventEmitter();
   
-  var hub = app.Hub.NewWithEmitters(transport_emitter,nodes_emitter);
+  var hub    = app.Hub.NewWithEmitters(inbox,outbox);
   
-  var gateway  = hub.createGateway();
   var router = hub.createRouter();
   
   // Create a Loopback Interface for Protocol-less Addresses
   var loopback = gateway.createTransport();
-  loopback.enqueue = loopback.receive;
+      loopback.enqueue = loopback.receive;
   
   return hub;
 }
