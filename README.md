@@ -38,34 +38,57 @@ Nodes can message other nodes with their address:
 
     var message = "Hello World";
     var address = "fed://192.168.0.23/node2";
-    node1.send(address,message);
+    node1.tell(address,message);
 
 For nodes on the same host, the hostname may be omitted:
 
-    node1.send("/node2", message);
+    node1.tell("/node2", message);
 
 ## Receive Messages
 
-Nodes receive messages to mailboxes which can have handlers:
+Incoming messages are emitted via the `message` event:
 
     node1.on('message',function(message){
       // handle message
     })
 
-The default mailbox is called `message` however other mailboxes can be used with the hash `#` syntax:
+Optionally a node may choose to receive the message header:
 
-    node2.on('#hello',function(message){
+    node1.on('message',function(message,header){
       // handle message
+      // handle header
     })
-    node1.send('/node2#hello',message);
+
+The header contains connection details, and can be used to send a reply.
+
+    this.tell( header.replyAddress, 'reply' );
+
+## Receiving Replies
+
+Nodes are stateless. All messages are fire-and-forget.
+
+This pattern doesn't work well for serving `HTTP` requests, etc. Something needs to hang on to the incoming socket connection while the request is being processed.
+
+Federation uses _anonymous-nodes_ for receiving replies.
+Instead of using `node.tell` to send messages use `node.ask`. The method `node.ask` returns a single-purpose node that will receive any replies to the original message.
+
+    // asking node
+    node2.on('message',function(question,header){
+      this.tell(header.replyAddress, 'Bob');
+    })
+    
+    // replying node
+    var anonymous_node = node1.ask('/node2','what is your name?')
+    
+    anonymous_node.on('message',function(name){
+      console.log('Hello %s',name);
+    });
 
 # Specification
 
 - the `fed://` protocol refers to whatever the default protocol will be, perhaps `axon://`
 - any protocol can be supported via a `Protocol` interface
-- local references are delivered locally, and bypass the any protocol interfaces
 
 ## Future Features
 
-- location-independent names will be supported via bang-syntax `!name`
-- the request-reply pattern will be applied via _anonymous actors_
+- location-independent names (DNS)
