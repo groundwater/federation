@@ -31,6 +31,15 @@ The Forge object contains all of the classes constructors.
 Constructors have specific names like `NewWithNameAndEmitter`;
 there can be many different constructors.
 
+```
+FooForge.prototype.NewWithNameAndEmitter = function(name,emitter){
+  var foo = new Foo();
+  foo.name    = name;
+  foo.emitter = emitter;
+  return foo;
+}
+```
+
 The actual class is never directly exported, there are reasons for this.
 The forge pattern is designed around the idea of encapsulation,
 and keeping things flexible.
