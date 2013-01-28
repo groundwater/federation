@@ -11,7 +11,7 @@ var app = {}
 
 app.Node      = node      .forge(app);
 app.Transport = transport .forge(app);
-app.Router    = router  .forge(app);
+app.Router    = router    .forge(app);
 app.Gateway   = gateway   .forge(app);
 app.Hub       = hub       .forge(app);
 
