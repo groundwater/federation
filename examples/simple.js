@@ -1,4 +1,4 @@
-var hub = require('../index');
+var hub = require('../index').init();
 
 var router  = hub.router;
 
@@ -17,3 +17,7 @@ tim.receive = function(message){
 
 console.log('Bob is Sending a Message to Tom');
 bob.tell('/tom','hello!');
+
+console.log();
+console.log('Bob is Sending a Message to Tom via Axon');
+bob.tell('axon://localhost/tom','Hello via Axon');
