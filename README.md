@@ -39,7 +39,27 @@ which will be called whenever the node receives a message.
       // handle message
     }
 
-# TODO
+## Request/Reply Pattern
 
-- add network-level transport
-- add request-reply pattern
+Nodes can reply contextually using the `ask` method.
+
+    node1
+    .ask('/node2','How old are you?')
+    .receive(function(msg){
+      console.log('Got Reply',msg);
+    });
+
+The request/reply pattern uses anonymous nodes,
+i.e. one-time actors.
+Anonymous nodes have a default timeout of 5000,
+after which an error will be triggered.
+You can respond to the error with:
+
+    node1.ask('/nod2','How old are you?')
+    .receive(function(msg){
+      // handle reply
+    })
+    .error(function(err){
+      // handle error
+    })
+

@@ -36,7 +36,7 @@ jill.receive(function(message,reply){
 });
 
 jack.ask('/jill','SYN').receive(function(message){
-  console.log('--> ACK');
+  console.log('Got Reply',message);
 }).error(function(err){
   console.log('Got Error',err);
 })
