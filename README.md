@@ -24,7 +24,7 @@ For nodes on the same host, the host and protocol can be omitted.
     var address = "/node2";
     node1.tell(address,message);
 
-Federation can also send nodes across the network:
+Federation can also send messages across the network to remote nodes:
 
     var address = "axon://192.168.0.12/node2";
     var message = "Hello from 192.168.0.9";
