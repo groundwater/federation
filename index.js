@@ -1,8 +1,6 @@
 var url       = require('url');
 var events    = require('events');
 
-var uuid      = require('node-uuid');
-
 var node      = require('./lib/node');
 var router    = require('./lib/router');
 var gateway   = require('./lib/gateway');
@@ -15,7 +13,6 @@ var axon      = require('./transports/axon');
 // Configure Application Dependencies
 var app = {}
 
-app.Uuid      = uuid.v4;
 app.Node      = node      .forge(app);
 app.Transport = transport .forge(app);
 app.Router    = router    .forge(app);
