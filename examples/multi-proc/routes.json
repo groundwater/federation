@@ -6,5 +6,9 @@
   {
     "regex":"tom",
     "address":"axon://127.0.0.1:5002/local"
+  },
+  {
+    "regex"   : ".*",
+    "address" : "/local"
   }
 ]

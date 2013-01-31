@@ -1,17 +1,13 @@
-var fs    = require('fs');
+// The Setup
 var fed   = require('../../index');
-var table = fed.defaults.table;
-var json  = JSON.parse( fs.readFileSync( __dirname + '/routes.json') )
-json.forEach(function(route){
-  var regex   = new RegExp(route.regex);
-  var address = route.address;
-  table.unshift({
-    regex: regex,
-    address: address
-  })
-})
+var table = require('./lib').table;
+
 fed.defaults.axon.PORT = 5001;
+fed.defaults.table     = table;
+
 var dir = fed.init();
+
+// The Actor Magic
 var bob = dir.createActor('bob');
 
 function send(){
