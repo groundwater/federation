@@ -45,16 +45,9 @@ function init(options){
   
   // Configure Axon push/pull Transport
   var net_axon = gateway.createTransport('axon:');
-  axon.setupAxonTransport(net_axon,options);
+  axon.setupAxonTransport(net_axon,options['axon']);
   
-  var table  = [
-    {
-      regex: /.*/,
-      address: '/local'
-    }
-  ]
-  
-  var router   = app.Router.NewWithTable(table);
+  var router   = app.Router.NewWithTable(options['table']);
   var local    = vertex.createNode('local');
   var producer = app.Producer.NewWithRouterAndNode(router,local);
   
@@ -62,11 +55,22 @@ function init(options){
 
 }
 
+var table  = [
+  {
+    regex   : /.*/,
+    address : '/local'
+  }
+]
+
 var defaults = {
-  AXON_PORT: 8973
+  axon      : {
+    PORT: 8973
+  },
+  table     : table
 }
 
-module.exports.init = function(options){
+module.exports.defaults = defaults;
+module.exports.init     = function(options){
   var opts = options || defaults;
   return init(opts);
 }

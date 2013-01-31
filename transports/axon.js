@@ -2,7 +2,7 @@ var axon = require('axon');
 
 module.exports.setupAxonTransport = function(transport,options){
   
-  var PULL_PORT = options.AXON_PORT || 8973;
+  var PULL_PORT = options.PORT || 8973;
   var PUSH_PORT = 8973;
   
   // Create a Network Interface Using Axon
