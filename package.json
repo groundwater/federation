@@ -7,7 +7,8 @@
   "author": "Jacob Groundwater",
   "license": "MIT",
   "dependencies": {
-    "axon": "~0.5.0"
+    "axon": "~0.5.0",
+    "node-uuid": "~1.4.0"
   },
   "devDependencies": {
     "mocha": "~1.8.1",
