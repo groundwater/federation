@@ -1,7 +1,9 @@
-var director = require('../index').init();
+var fed = require('../index')
 
-var bob = director.createActor('bob');
-var tom = director.createActor('tom');
+var dir = fed.init(); // or fed.init( fed.defaults );
+
+var bob = dir.createActor('bob');
+var tom = dir.createActor('tom');
 
 bob.onMessage = function(msg){
   console.log('Bob Got Message: %s',msg);
