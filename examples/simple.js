@@ -8,7 +8,7 @@ var tom = router.createNode('tom');
 
 tom.receive(function(message){
   console.log('--> Tom is Passing a Message to Tim');
-  this.tell('/tim',message);
+  this.send('/tim',message);
 });
 
 tim.receive(function(message,reply){
@@ -16,8 +16,8 @@ tim.receive(function(message,reply){
 });
 
 console.log('Bob is Sending a Message to Tom');
-bob.tell('/tom','hello!');
+bob.send('/tom','hello!');
 
 console.log('Bob is Sending a Message to Tom via Axon');
-bob.tell('axon://localhost/tom','Hello via Axon');
+bob.send('axon://localhost/tom','Hello via Axon');
 
