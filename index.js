@@ -2,7 +2,7 @@ var url       = require('url');
 var events    = require('events');
 
 var node      = require('./lib/node');
-var router    = require('./lib/router');
+var vertex    = require('./lib/vertex');
 var gateway   = require('./lib/gateway');
 var transport = require('./lib/transport');
 var hub       = require('./lib/hub');
@@ -15,7 +15,7 @@ var app = {}
 
 app.Node      = node      .forge(app);
 app.Transport = transport .forge(app);
-app.Router    = router    .forge(app);
+app.Vertex    = vertex    .forge(app);
 app.Gateway   = gateway   .forge(app);
 app.Hub       = hub       .forge(app);
 
@@ -27,7 +27,7 @@ function init(options){
   var hub     = app.Hub.NewWithEmitters(inbox,outbox);
   
   var gateway = hub.createGateway();
-  var router  = hub.createRouter();
+  var vertex  = hub.createVertex();
   
   // Create a Loopback Interface for Protocol-less Addresses
   var loopback = gateway.createTransport();
