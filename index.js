@@ -51,7 +51,7 @@ function init(options){
   var local    = vertex.createNode('local');
   var producer = app.Producer.NewWithRouterAndNode(router,local);
   
-  return producer.director;
+  return producer;
 
 }
 

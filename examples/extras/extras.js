@@ -1,6 +1,6 @@
 var fed = require('../../index');
 
-var dir = fed.init(); // or fed.init( fed.defaults );
+var dir = fed.init().director; // or fed.init( fed.defaults );
 
 var bob = dir.createActor('bob');
 var tom = dir.createActor('tom');

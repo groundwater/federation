@@ -5,7 +5,7 @@ var table = require('./lib').table;
 fed.defaults.axon.PORT = 5001;
 fed.defaults.table     = table;
 
-var dir = fed.init();
+var dir = fed.init().director;
 
 // The Actor Magic
 var bob = dir.createActor('bob');
