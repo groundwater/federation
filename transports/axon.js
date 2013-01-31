@@ -11,13 +11,14 @@ module.exports.setupAxonTransport = function(transport,options){
   transport.enqueue = function(package){
     var dest = package.head.dst;
     
-    var host = dest.host;
-    var port = dest.port || PUSH_PORT;
+    var host = dest.hostname;
+    var port = parseInt(dest.port) || PUSH_PORT;
     
     var push = axon.socket('push');
     
     push.connect(port,host);
     push.send( JSON.stringify(package) );
+    push.on('error', console.log)
   }
   
   // Incoming Connections
