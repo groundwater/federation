@@ -1,23 +1,17 @@
-var hub = require('../index').init();
+var fed = require('../index')
 
-var router  = hub.router;
+var dir = fed.init(); // or fed.init( fed.defaults );
 
-var tim = router.createNode('tim');
-var bob = router.createNode('bob');
-var tom = router.createNode('tom');
+var bob = dir.createActor('bob');
+var tom = dir.createActor('tom');
 
-tom.receive = function(message){
-  console.log('Tom is Passing a Message to Tim');
-  this.tell('/tim',message);
+bob.onMessage = function(msg){
+  console.log('Bob Got Message: %s',msg);
 }
 
-tim.receive = function(message){
-  console.log('Tim Got Message %s',message);
+tom.onMessage = function(msg){
+  console.log('Tom Got Message: %s',msg);
 }
 
-console.log('Bob is Sending a Message to Tom');
-bob.tell('/tom','hello!');
-
-console.log();
-console.log('Bob is Sending a Message to Tom via Axon');
-bob.tell('axon://localhost/tom','Hello via Axon');
+bob.tell('tom','hi');
+tom.tell('bob','bye');

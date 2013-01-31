@@ -1,0 +1,2 @@
+bob: node proc2.js
+tom: node proc1.js

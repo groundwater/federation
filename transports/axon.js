@@ -2,7 +2,7 @@ var axon = require('axon');
 
 module.exports.setupAxonTransport = function(transport,options){
   
-  var PULL_PORT = options.AXON_PORT || 8973;
+  var PULL_PORT = options.PORT || 8973;
   var PUSH_PORT = 8973;
   
   // Create a Network Interface Using Axon
@@ -11,13 +11,14 @@ module.exports.setupAxonTransport = function(transport,options){
   transport.enqueue = function(package){
     var dest = package.head.dst;
     
-    var host = dest.host;
-    var port = dest.port || PUSH_PORT;
+    var host = dest.hostname;
+    var port = parseInt(dest.port) || PUSH_PORT;
     
     var push = axon.socket('push');
     
     push.connect(port,host);
     push.send( JSON.stringify(package) );
+    push.on('error', console.log)
   }
   
   // Incoming Connections
