@@ -7,6 +7,11 @@ var gateway   = require('./lib/gateway');
 var transport = require('./lib/transport');
 var hub       = require('./lib/hub');
 
+var actor     = require('./lib/actor');
+var director  = require('./lib/director');
+var router    = require('./lib/router');
+var producer  = require('./lib/producer');
+
 // Import Default Transport Modules
 var axon      = require('./transports/axon');
 
@@ -18,6 +23,11 @@ app.Transport = transport .forge(app);
 app.Vertex    = vertex    .forge(app);
 app.Gateway   = gateway   .forge(app);
 app.Hub       = hub       .forge(app);
+
+app.Actor     = actor     .forge(app);
+app.Director  = director  .forge(app);
+app.Router    = router    .forge(app);
+app.Producer  = producer  .forge(app);
 
 function init(options){
   
