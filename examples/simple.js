@@ -1,23 +1,15 @@
-var hub = require('../index').init();
+var director = require('../index').init();
 
-var vertex  = hub.vertex;
+var bob = director.createActor('bob');
+var tom = director.createActor('tom');
 
-var tim = vertex.createNode('tim');
-var bob = vertex.createNode('bob');
-var tom = vertex.createNode('tom');
+bob.onMessage = function(msg){
+  console.log('Bob Got Message: %s',msg);
+}
 
-tom.receive = function(message,header){
-  console.log('--> Tom is Passing a Message to Tim');
-  this.send('/tim',message);
-};
+tom.onMessage = function(msg){
+  console.log('Tom Got Message: %s',msg);
+}
 
-tim.receive = function(message,header){
-  console.log('--> Tim Got Message %s',message);
-};
-
-console.log('Bob is Sending a Message to Tom');
-bob.send('/tom','hello!');
-
-console.log('Bob is Sending a Message to Tom via Axon');
-bob.send('axon://localhost/tom#test','Hello via Axon');
-
+bob.tell('tom','hi');
+tom.tell('bob','bye');

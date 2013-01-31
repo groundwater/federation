@@ -47,7 +47,39 @@ function init(options){
   var net_axon = gateway.createTransport('axon:');
   axon.setupAxonTransport(net_axon,options);
   
-  return hub;
+  // Director
+  var director_emitter = new events.EventEmitter();
+  var director = app.Director.NewWithEmitter(director_emitter);
+  
+  var local = vertex.createNode('local');
+  
+  // Router
+  var table  = [
+    {
+      regex: /.*/,
+      address: '/local'
+    }
+  ]
+  var router = app.Router.NewWithTable(table);
+  
+  director_emitter.on('enqueue',function(toPath,fromPath,message){
+    var address = router.route(toPath);
+    var packet  = {
+      toPath   : toPath,
+      fromPath : fromPath,
+      message  : message
+    }
+    local.send(address,packet);
+  });
+  
+  local.receive = function(packet){
+    var toPath   = packet.toPath;
+    var fromPath = packet.fromPath;
+    var message  = packet.message;
+    director_emitter.emit('dequeue',fromPath,toPath,message);
+  }
+  
+  return director;
 }
 
 var defaults = {
