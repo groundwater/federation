@@ -12,6 +12,8 @@ var director  = require('./lib/director');
 var router    = require('./lib/router');
 var producer  = require('./lib/producer');
 
+var routes    = require('./lib/routes');
+
 // Import Default Transport Modules
 var axon      = require('./transports/axon');
 
@@ -55,18 +57,13 @@ function init(options){
 
 }
 
-var table  = [
-  {
-    regex   : /.*/,
-    address : '/local'
-  }
-]
-
+var routes_file  = process.env.FED_ROUTES_FILE || __dirname + '/routes.json';
+var routes_table = routes.load( routes_file );
 var defaults = {
   axon      : {
     PORT: 8973
   },
-  table     : table
+  table     : routes_table
 }
 
 module.exports.defaults = defaults;
