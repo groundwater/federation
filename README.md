@@ -10,56 +10,37 @@ Federation is an actor system for Node.js inspired by Erlang and Akka.
 
 Federation nodes can send and receive messages to each other.
 
-    var router = require('federation').router;
+    var director = require('federation').init().director;
     
-    var node1  = router.createNode('node1');
-    var node2  = router.createNode('node2');
+    var actorBob = director.createActor('bob');
+    var actorTom = director.createActor('tom');
 
 ## Send a Message
 
-Every node exists at a URL, and can be messaged at that URL.
-For nodes on the same host, the host and protocol can be omitted.
+Every actor has a name, and can receive messages at that name.
+Actors `tell` each other one-off messages:
 
-    var message = "Hello World";
-    var address = "/node2";
-    node1.tell(address,message);
-
-Federation can also send messages across the network to remote nodes:
-
-    var address = "axon://192.168.0.12/node2";
-    var message = "Hello from 192.168.0.9";
-    node1.tell(address,message);
+    actorBob.tell('tom','Good Morning');
 
 ## Receive Messages
 
-Each node can be assigned a single `receive` function,
-which will be called whenever the node receives a message.
+Actors receive messages by binding a callback to their `onMessage` property:
 
-    node1.receive = function(message){
-      // handle message
+    actorTom.onMessage = function(message){
+      console.log('Got Message:', message);
     }
 
-## Request/Reply Pattern
+## Request-Reply Pattern
 
-Nodes can reply contextually using the `ask` method.
+Actors can also `ask` other actors questions that will receive replies.
 
-    node1
-    .ask('/node2','How old are you?')
-    .receive(function(msg){
-      console.log('Got Reply',msg);
-    });
-
-The request/reply pattern uses anonymous nodes,
-i.e. one-time actors.
-Anonymous nodes have a default timeout of 5000,
-after which an error will be triggered.
-You can respond to the error with:
-
-    node1.ask('/nod2','How old are you?')
-    .receive(function(msg){
-      // handle reply
-    })
-    .error(function(err){
-      // handle error
+    actorBob.ask('tom','Are you happy?',function(happy){
+      if(happy){
+        console.log('Tom is Happy');
+      }else{
+        console.log('Tom is Not Happy');
+      }
     })
 
+The request-reply pattern uses anonymous actors known as **extras**.
+An extra has a limited life span of `5000` by default.
