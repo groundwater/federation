@@ -4,13 +4,36 @@
   "description": "Federated Node.js Actor Network",
   "main": "index.js",
   "repository": "",
-  "author": "Jacob Groundwater",
+  "author": {
+    "name": "Jacob Groundwater",
+    "email": "groundwater@gmail.com",
+    "url": "http://underflow.ca"
+  },
   "license": "MIT",
   "dependencies": {
     "axon": "~0.5.0"
   },
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/jacobgroundwater/federation.git"
+  },
   "devDependencies": {
     "mocha": "~1.8.1",
     "sinon": "~1.5.2"
+  },
+  "engines": {
+    "node": ">=0.8.17"
+  },
+  "keywords":[
+    "akka",
+    "actor",
+    "erlang",
+    "federated",
+    "messaging",
+    "distributed"
+  ],
+  "homepage": "https://github.com/jacobgroundwater/federation/",
+  "bugs":{
+    "url": "https://github.com/jacobgroundwater/federation/issues"
   }
 }
