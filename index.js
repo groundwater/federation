@@ -1,12 +1,14 @@
 var url       = require('url');
 var events    = require('events');
 
+// Low-Level Imports
 var node      = require('./lib/node');
 var vertex    = require('./lib/vertex');
 var gateway   = require('./lib/gateway');
 var transport = require('./lib/transport');
 var hub       = require('./lib/hub');
 
+// Higher-Level Imports
 var actor     = require('./lib/actor');
 var director  = require('./lib/director');
 var router    = require('./lib/router');
@@ -25,7 +27,6 @@ app.Transport = transport .forge(app);
 app.Vertex    = vertex    .forge(app);
 app.Gateway   = gateway   .forge(app);
 app.Hub       = hub       .forge(app);
-
 app.Actor     = actor     .forge(app);
 app.Director  = director  .forge(app);
 app.Router    = router    .forge(app);
@@ -49,14 +50,17 @@ function init(options){
   var net_axon = gateway.createTransport('axon:');
   axon.setupAxonTransport(net_axon,options['axon']);
   
+  // Configure Router
   var router   = app.Router.NewWithTable(options['table']);
   var local    = vertex.createNode('local');
   var producer = app.Producer.NewWithRouterAndNode(router,local);
   
+  // Producer Contains all Relevant Sub-Systems
   return producer;
 
 }
 
+// Load Routing Table from Package `routes.json` File
 var routes_file  = process.env.FED_ROUTES_FILE || __dirname + '/routes.json';
 var routes_table = routes.load( routes_file );
 var defaults = {
