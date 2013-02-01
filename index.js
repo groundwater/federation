@@ -31,6 +31,7 @@ app.Actor     = actor     .forge(app);
 app.Director  = director  .forge(app);
 app.Router    = router    .forge(app);
 app.Producer  = producer  .forge(app);
+app.Routes    = routes    .forge(app);
 
 function init(options){
   
@@ -62,7 +63,7 @@ function init(options){
 
 // Load Routing Table from Package `routes.json` File
 var routes_file  = process.env.FED_ROUTES_FILE || __dirname + '/routes.json';
-var routes_table = routes.load( routes_file );
+var routes_table = app.Routes.Load( routes_file );
 var defaults = {
   axon      : {
     PORT: 8973
