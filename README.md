@@ -11,7 +11,18 @@ many features familiar to Akka and Erlang are not included.
 Federation prioritizes being useful to the Node.js community
 over being faithful to the pure actor model.
 
-Federation considers cross-process and cross-host messaging to be the top priority. It has been designed to sit _above_ an application protocol like `axon` or `http`, and can be extended to any other protocol quite easily.
+Federation considers cross-process and cross-host messaging to be the top priority. 
+It has been designed to sit _above_ an application protocol like `axon` or `http`, and can be extended to any other protocol quite easily.
+
+# Contributors
+
+A good module evolves to meet the needs of the community.
+There are many ways you can help.
+Pull-requests are always welcome, but you don't have to be a programming expert to lend a hand.
+
+1. [ask a question](https://github.com/jacobgroundwater/federation/issues/new) about using federation, your question may help others
+2. [suggest an enhancement](https://github.com/jacobgroundwater/federation/issues/new), suggestions can help prioritize features
+3. [tell us your success stories](https://github.com/jacobgroundwater/federation/wiki/Success-Stories), how have you used federation, and what tips do you have for others?
 
 # Install
 
