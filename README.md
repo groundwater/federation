@@ -2,7 +2,14 @@
 
 # Introduction
 
-Federation is a federated event emitter using actors, modeled after Akka.
+Federation is a federated event emitter for distributed environments.
+
+Federation is inspired by Akka and Erlang,
+and borrows some semantics from the actor model.
+While being a full-fledged actor system would be impressive,
+it does not meet with the demands of most Node.js apps.
+Federation prioritizes being useful to the Node.js community
+over being faithful to the pure actor model.
 
 # Install
 
