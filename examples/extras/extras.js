@@ -14,6 +14,12 @@ tom.onMessage = function(msg,reply){
   reply('pong');
 }
 
-bob.ask('tom','ping',function(reply){
+console.log('Waiting for Reply from Tom');
+bob.ask('tom','ping',function(err,reply){
   console.log('Bob Got Reply   : %s',reply);
+});
+
+console.log('Waiting for Reply from June');
+bob.ask('june','ping',function(err,reply){
+  if(err) console.log('Ask Error',err);
 });
