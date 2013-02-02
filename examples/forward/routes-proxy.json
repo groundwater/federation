@@ -1,0 +1,10 @@
+[
+  {
+    "regex": "^universe",
+    "address": "axon://localhost:5001/local"
+  },
+  {
+    "regex": "^mirrorverse",
+    "address": "axon://localhost:5002/local"
+  }
+]

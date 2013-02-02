@@ -1,0 +1,3 @@
+proc1: node proc1.js
+proc2: node proc2.js
+proxy: node proxy.js
