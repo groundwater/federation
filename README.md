@@ -8,7 +8,7 @@ Federation is an actor system for Node.js inspired by Erlang and Akka.
 
 # Usage
 
-Federation nodes can send and receive messages to each other.
+Every actor has a name, and can receive messages at that name.
 
     var director = require('federation').init().director;
     
@@ -17,10 +17,12 @@ Federation nodes can send and receive messages to each other.
 
 ## Send a Message
 
-Every actor has a name, and can receive messages at that name.
-Actors `tell` each other one-off messages:
+Federation nodes can send and receive messages to each other using `tell` or `ask`.
+Actors `tell` each other messages with:
 
     actorBob.tell('tom','Good Morning');
+
+Telling a message is a fire-and-forget approach.
 
 ## Receive Messages
 
@@ -30,20 +32,29 @@ Actors receive messages by binding a callback to their `onMessage` property:
       console.log('Got Message:', message);
     }
 
+The callback will be invoked as a method, so `this` resolves to the actor object.
+
+    actorTom.onMessage = function(message){
+      this.tell('joe','Got Message!');
+    }
+
 ## Request-Reply Pattern
 
 Actors can also `ask` other actors questions that will receive replies.
 
-    actorBob.ask('tom','Are you happy?',function(happy){
+    actorBob.ask('tom','Are you happy?',function(err,happy){
+      if(err) return console.log('Error Asking Tom:',err);
       if(happy){
         console.log('Tom is Happy');
       }else{
         console.log('Tom is Not Happy');
       }
-    })
+    });
 
 The request-reply pattern uses anonymous actors known as **extras**.
 An extra has a limited life span of `5000` by default.
+If the timeout occurs before a reply is delivered,
+a `TIMEOUT` error will be send to your callback.
 
 # Routing
 
