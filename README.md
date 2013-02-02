@@ -103,6 +103,9 @@ Once a match is found, the message is sent to the remote process.
 ![Routing](https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png)
 
 The [default routing table](https://github.com/jacobgroundwater/federation/blob/master/routes.json) is a decoded from a JSON file.
+The table is formatted as an array,
+with highest priority matches defined first.
+Routes are matched on a first-to-match basis.
 
 ```json
 [
