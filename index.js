@@ -4,6 +4,9 @@ var events    = require('events');
 // Import Default Transport Modules
 var axon      = require('./transports/axon');
 
+// Application Defaults
+var defaults  = require('./defaults');
+
 // Configure Application Dependencies
 var lib       = require('./lib');
 var app = {}
@@ -17,7 +20,6 @@ app.Actor     = lib.actor     .forge(app);
 app.Director  = lib.director  .forge(app);
 app.Router    = lib.router    .forge(app);
 app.Producer  = lib.producer  .forge(app);
-app.Routes    = lib.routes    .forge(app);
 
 function init(options){
   
@@ -45,16 +47,6 @@ function init(options){
   // Producer Contains all Relevant Sub-Systems
   return producer;
 
-}
-
-// Load Routing Table from Package `routes.json` File
-var routes_file  = process.env.FED_ROUTES_FILE || __dirname + '/routes.json';
-var routes_table = app.Routes.Load( routes_file );
-var defaults = {
-  axon      : {
-    PORT: 8973
-  },
-  table     : routes_table
 }
 
 module.exports.defaults = defaults;
