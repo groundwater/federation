@@ -1,6 +1,6 @@
 # Introduction
 
-Federation is an actor system for Node.js inspired by Erlang and Akka.
+Federation is a federated event emitter using actors, modeled after Akka.
 
 # Install
 
@@ -10,17 +10,21 @@ Federation is an actor system for Node.js inspired by Erlang and Akka.
 
 Every actor has a name, and can receive messages at that name.
 
-    var director = require('federation').init().director;
+```javascript
+var director = require('federation').init().director;
     
-    var actorBob = director.createActor('bob');
-    var actorTom = director.createActor('tom');
+var actorBob = director.createActor('bob');
+var actorTom = director.createActor('tom');
+```
 
 ## Send a Message
 
-Federation nodes can send and receive messages to each other using `tell` or `ask`.
+Federation nodes can send and receive messages to each other.
 Actors `tell` each other messages with:
 
-    actorBob.tell('tom','Good Morning');
+```javascript
+actorBob.tell('tom','Good Morning');
+```
 
 Telling a message is a fire-and-forget approach.
 
@@ -28,28 +32,33 @@ Telling a message is a fire-and-forget approach.
 
 Actors receive messages by binding a callback to their `onMessage` property:
 
-    actorTom.onMessage = function(message){
-      console.log('Got Message:', message);
-    }
+```javascript
+actorTom.onMessage = function(message){
+  console.log('Got Message:', message);
+}
+```
 
 The callback will be invoked as a method, so `this` resolves to the actor object.
 
-    actorTom.onMessage = function(message){
-      this.tell('joe','Got Message!');
-    }
-
+```javascript
+actorTom.onMessage = function(message){
+  this.tell('joe','Got Message!');
+}
+```
 ## Request-Reply Pattern
 
 Actors can also `ask` other actors questions that will receive replies.
 
-    actorBob.ask('tom','Are you happy?',function(err,happy){
-      if(err) return console.log('Error Asking Tom:',err);
-      if(happy){
-        console.log('Tom is Happy');
-      }else{
-        console.log('Tom is Not Happy');
-      }
-    });
+```javascript
+actorBob.ask('tom','Are you happy?',function(err,happy){
+  if(err) return console.log('Error Asking Tom:',err);
+  if(happy){
+    console.log('Tom is Happy');
+  }else{
+    console.log('Tom is Not Happy');
+  }
+});
+```
 
 The request-reply pattern uses anonymous actors known as **extras**.
 An extra has a limited life span of `5000` by default.
@@ -69,9 +78,11 @@ The packet is then forwarded to the appropriate host and process.
 
 - the routing table completely describes the network topology
 
+![Routing](https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png)
+
 The [default routing table](https://github.com/jacobgroundwater/federation/blob/master/routes.json) is a decoded from a JSON file.
 
-```
+```json
 [
   {
     "regex": "hadoop/.*",
