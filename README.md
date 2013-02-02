@@ -126,6 +126,15 @@ The first match wins, and the packet is forwarded to the gateway at the destinat
 See the example in [Multi-Proc Example](https://github.com/jacobgroundwater/federation/tree/master/examples/multi-proc) for two-process routing table.
 Routes can be the same, or different hosts.
 
+# Documentation
+
+Comprehensive documentation is kept in the [wiki](https://github.com/jacobgroundwater/federation/wiki).
+
+The wiki is open to anyone for improvement.
+Feel free to make constructive edits.
+If you are not sure about making a change,
+please ask first on the [issue tracker](https://github.com/jacobgroundwater/federation/issues/new).
+
 # Todo
 
 The todo list is maintained under the [issue tracker](https://github.com/jacobgroundwater/federation/issues?labels=enhancement&page=1&state=open)
