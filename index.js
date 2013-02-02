@@ -3,6 +3,7 @@ var events    = require('events');
 
 // Import Default Transport Modules
 var axon      = require('./transports/axon');
+var http      = require('./transports/http');
 
 // Application Defaults
 var defaults  = require('./defaults');
@@ -38,6 +39,9 @@ function init(options){
   // Configure Axon push/pull Transport
   var net_axon = gateway.createTransport('axon:');
   axon.setupAxonTransport(net_axon,options['axon']);
+  
+  var net_http = gateway.createTransport('http:');
+  http.setupHttpTransport(net_http,options['http']);
   
   // Configure Router
   var router   = app.Router.NewWithTable(options['table']);

@@ -7,6 +7,9 @@ var defaults = {
   axon      : {
     PORT: 8973
   },
+  http      :{
+    PORT: 8974
+  },
   table     : routes_table
 }
 

@@ -1,0 +1,14 @@
+[
+  {
+    "regex":"bob",
+    "address":"http://127.0.0.1:5011/local"
+  },
+  {
+    "regex":"tom",
+    "address":"http://127.0.0.1:5012/local"
+  },
+  {
+    "regex"   : ".*",
+    "address" : "/local"
+  }
+]
