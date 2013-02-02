@@ -21,6 +21,7 @@ app.Actor     = lib.actor     .forge(app);
 app.Director  = lib.director  .forge(app);
 app.Router    = lib.router    .forge(app);
 app.Producer  = lib.producer  .forge(app);
+app.Routes    = lib.routes    .forge(app);
 
 function init(options){
   
@@ -40,11 +41,20 @@ function init(options){
   var net_axon = gateway.createTransport('axon:');
   axon.setupAxonTransport(net_axon,options['axon']);
   
-  var net_http = gateway.createTransport('http:');
-  http.setupHttpTransport(net_http,options['http']);
+  // HTTP Transport
+  // var net_http = gateway.createTransport('http:');
+  // http.setupHttpTransport(net_http,options['http']);
+  
+  // Configure Routes Table
+  var table      = options['table'];
+  var table_file = options['table_file'];
+  if(!table){
+    if(!table_file) throw new Error('No Routing Table Defined');
+    table = app.Routes.Load(table_file);
+  }
   
   // Configure Router
-  var router   = app.Router.NewWithTable(options['table']);
+  var router   = app.Router.NewWithTable(table);
   var local    = vertex.createNode('local');
   var producer = app.Producer.NewWithRouterAndNode(router,local);
   
