@@ -1,3 +1,5 @@
+![Awesome Picard Meme](http://i.imgur.com/T5kIkxX.jpg)
+
 # Introduction
 
 Federation is a federated event emitter using actors, modeled after Akka.
