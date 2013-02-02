@@ -92,13 +92,13 @@ a `TIMEOUT` error will be send to your callback.
 Federation supports inter-process communication,
 and abstracts the details away from the programmer.
 
-Actor names can exist on _any_ process, on _any_ host on the network.
+Actors have names, any name you like.
+The nameing convention is up to you,
+but choosing a good convention will make routing easier.
 
-Whenever a message packet hits the `router` object,
-the router consults a routing table that matches actor names to network addresses.
-The packet is then forwarded to the appropriate host and process.
-
-- the routing table completely describes the network topology
+Each process has its own router and routing table.
+The routing table matches actor names to URLs using regular expressions.
+Once a match is found, the message is sent to the remote process.
 
 ![Routing](https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png)
 
