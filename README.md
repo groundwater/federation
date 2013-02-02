@@ -2,14 +2,27 @@
 
 # Introduction
 
-Federation is a federated event emitter for distributed environments.
+> Federation is a federated event emitter for distributed environments.
 
 Federation is inspired by Akka and Erlang,
 and borrows some semantics from the actor model.
-While being a full-fledged actor system would be impressive,
-it does not meet with the demands of most Node.js apps.
+While there _are_ actors,
+many features familiar to Akka and Erlang are not included.
 Federation prioritizes being useful to the Node.js community
 over being faithful to the pure actor model.
+
+Federation considers cross-process and cross-host messaging to be the top priority. 
+It has been designed to sit _above_ an application protocol like `axon` or `http`, and can be extended to any other protocol quite easily.
+
+# Contributors
+
+A good module evolves to meet the needs of the community.
+There are many ways you can help.
+Pull-requests are always welcome, but you don't have to be a programming expert to lend a hand.
+
+1. [ask a question](https://github.com/jacobgroundwater/federation/issues/new) about using federation, your question may help others
+2. [suggest an enhancement](https://github.com/jacobgroundwater/federation/issues/new), suggestions can help prioritize features
+3. [tell us your success stories](https://github.com/jacobgroundwater/federation/wiki/Success-Stories), how have you used federation, and what tips do you have for others?
 
 # Install
 
@@ -79,17 +92,20 @@ a `TIMEOUT` error will be send to your callback.
 Federation supports inter-process communication,
 and abstracts the details away from the programmer.
 
-Actor names can exist on _any_ process, on _any_ host on the network.
-
-Whenever a message packet hits the `router` object,
-the router consults a routing table that matches actor names to network addresses.
-The packet is then forwarded to the appropriate host and process.
-
-- the routing table completely describes the network topology
+Actors have names, any name you like.
+The nameing convention is up to you,
+but choosing a good convention will make routing easier.
+Each process has its own router and routing table.
+Since messages are addressed to other actors by name,
+the router matches names to URLs.
+Once a match is found, the message is sent to the remote process.
 
 ![Routing](https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png)
 
 The [default routing table](https://github.com/jacobgroundwater/federation/blob/master/routes.json) is a decoded from a JSON file.
+The table is formatted as an array,
+with highest priority matches defined first.
+Routes are matched on a first-to-match basis.
 
 ```json
 [
