@@ -6,10 +6,12 @@
 
 Federation is inspired by Akka and Erlang,
 and borrows some semantics from the actor model.
-While being a full-fledged actor system would be impressive,
-it does not meet with the demands of most Node.js apps.
+While there _are_ actors,
+many features familiar to Akka and Erlang are not included.
 Federation prioritizes being useful to the Node.js community
 over being faithful to the pure actor model.
+
+Federation considers cross-process and cross-host messaging to be the top priority. It has been designed to sit _above_ an application protocol like `axon` or `http`, and can be extended to any other protocol quite easily.
 
 # Install
 
