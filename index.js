@@ -1,37 +1,23 @@
 var url       = require('url');
 var events    = require('events');
 
-// Low-Level Imports
-var node      = require('./lib/node');
-var vertex    = require('./lib/vertex');
-var gateway   = require('./lib/gateway');
-var transport = require('./lib/transport');
-var hub       = require('./lib/hub');
-
-// Higher-Level Imports
-var actor     = require('./lib/actor');
-var director  = require('./lib/director');
-var router    = require('./lib/router');
-var producer  = require('./lib/producer');
-
-var routes    = require('./lib/routes');
-
 // Import Default Transport Modules
 var axon      = require('./transports/axon');
 
 // Configure Application Dependencies
+var lib       = require('./lib');
 var app = {}
 
-app.Node      = node      .forge(app);
-app.Transport = transport .forge(app);
-app.Vertex    = vertex    .forge(app);
-app.Gateway   = gateway   .forge(app);
-app.Hub       = hub       .forge(app);
-app.Actor     = actor     .forge(app);
-app.Director  = director  .forge(app);
-app.Router    = router    .forge(app);
-app.Producer  = producer  .forge(app);
-app.Routes    = routes    .forge(app);
+app.Node      = lib.node      .forge(app);
+app.Transport = lib.transport .forge(app);
+app.Vertex    = lib.vertex    .forge(app);
+app.Gateway   = lib.gateway   .forge(app);
+app.Hub       = lib.hub       .forge(app);
+app.Actor     = lib.actor     .forge(app);
+app.Director  = lib.director  .forge(app);
+app.Router    = lib.router    .forge(app);
+app.Producer  = lib.producer  .forge(app);
+app.Routes    = lib.routes    .forge(app);
 
 function init(options){
   
