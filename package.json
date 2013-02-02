@@ -1,6 +1,6 @@
 {
   "name": "federation",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Federated Node.js Actor Network",
   "main": "index.js",
   "repository": "",
