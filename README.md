@@ -89,7 +89,7 @@ The [default routing table](https://github.com/jacobgroundwater/federation/blob/
     "address": "axon://10.0.1.12/local"
   },
   {
-    "regex": "mongo"/.*",
+    "regex": "mongo/.*",
     "address": "axon://10.0.1.122/local"
   }
 ]
