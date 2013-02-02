@@ -95,9 +95,9 @@ and abstracts the details away from the programmer.
 Actors have names, any name you like.
 The nameing convention is up to you,
 but choosing a good convention will make routing easier.
-
 Each process has its own router and routing table.
-The routing table matches actor names to URLs using regular expressions.
+Since messages are addressed to other actors by name,
+the router matches names to URLs.
 Once a match is found, the message is sent to the remote process.
 
 ![Routing](https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png)
