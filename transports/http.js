@@ -2,8 +2,8 @@ var http = require('http');
 
 module.exports.init = function(transport,options){
   
-  var PULL_PORT = options.PORT || 8974;
-  var PUSH_PORT = 8974;
+  var PULL_PORT = options.PORT_BIND;
+  var PUSH_PORT = options.PORT_CONNECT;
   
   // Create a Network Interface Using Axon
   

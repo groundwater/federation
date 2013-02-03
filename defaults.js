@@ -11,7 +11,7 @@ var defaults = {
   transports: {
     
     // Axon Transports
-    axon      : {
+    axon: {
       
       // The location of the module to load
       // Relative paths are resolved relative to the federation module 
@@ -23,6 +23,18 @@ var defaults = {
       // The default port Axon connects to on the remote host 
       // if no port is specified in the connection URL
       PORT_CONNECT: 8973
+    },
+    
+    http: {
+      
+      disabled: true,
+      
+      module : 'transports/http',
+      
+      PORT_BIND: 8974,
+      
+      PORT_CONNECT: 8974
+      
     }
     
   },
