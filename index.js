@@ -14,6 +14,39 @@ var defaults  = require('./defaults');
 var lib       = require('./lib');
 var app = {}
 
+// Dependency Injection Magic
+//
+//             o
+//                  O       /`-.__
+//                         /  \·'^|
+//            o           T    l  *
+//                       _|-..-|_
+//                O    (^ '----' `)
+//                      `\-....-/^   Dependicus Injectus
+//            O       o  ) "/ " (
+//                      _( (-)  )_
+//                  O  /\ )    (  /\
+//                    /  \(    ) |  \
+//                o  o    \)  ( /    \
+//                  /     |(  )|      \
+//                 /    o \ \( /       \
+//           __.--'   O    \_ /   .._   \
+//          //|)\      ,   (_)   /(((\^)'\
+//             |       | O         )  `  |
+//             |      / o___      /      /
+//            /  _.-''^^__O_^^''-._     /
+//          .'  /  -''^^    ^^''-  \--'^
+//        .'   .`.  `'''----'''^  .`. \
+//      .'    /   `'--..____..--'^   \ \
+//     /  _.-/                        \ \
+// .::'_/^   |                        |  `.
+//        .-'|                        |    `-.
+//  _.--'`   \                        /       `-.
+// /          \                      /           `-._
+// `'---..__   `.                  .´_.._   __       \
+//          ``'''`.              .'      `'^  `''---'^
+//                 `-..______..-'
+// 
 app.Node      = lib.node      .forge(app);
 app.Transport = lib.transport .forge(app);
 app.Vertex    = lib.vertex    .forge(app);
@@ -26,6 +59,9 @@ app.Producer  = lib.producer  .forge(app);
 app.Route     = lib.route     .forge(app);
 app.Table     = lib.table     .forge(app);
 
+// This is the messy stuff, but thankfully most of the mess
+// is contained here. Over time, the logic defined here should
+// be refactored into its own modules.
 function start(options){
   
   var outbox  = new events.EventEmitter();
@@ -83,10 +119,12 @@ function start(options){
   var node     = vertex.createNode();
   var producer = app.Producer.NewWithRouter(router);
   
+  // Bind router events to the node handling message transport
   r_emit.on('send',function(address,packet){
     node.send(address,packet);
   });
   
+  // Route incoming node messages to the producer -> directory -> actor
   node.receive = function(packet){
     producer.enqueue(packet);
   }
@@ -96,7 +134,10 @@ function start(options){
 
 }
 
+// Expose defaults
 module.exports.defaults = defaults;
+
+// Go Baby Go!
 module.exports.init     = function(options){
   var opts = options || defaults;
   return start(opts);
