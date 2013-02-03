@@ -55,7 +55,7 @@ function init(options){
   
   // Configure Router
   var router   = app.Router.NewWithTable(table);
-  var local    = vertex.createNode('local');
+  var local    = vertex.createNode();
   var producer = app.Producer.NewWithRouterAndNode(router,local);
   
   // Producer Contains all Relevant Sub-Systems

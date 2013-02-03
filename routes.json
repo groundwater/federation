@@ -1,6 +1,6 @@
 [
   {
     "regex"   : ".*",
-    "address" : "/local"
+    "address" : "/"
   }
 ]
