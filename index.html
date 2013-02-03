@@ -20,7 +20,7 @@
     <header>
       <div class="inner">
         <h1>Federation</h1>
-        <h2>A Federated Message Network in Node.js Build on Axon</h2>
+        <h2>A Distributed Message Network in Node.js</h2>
         <a href="https://github.com/jacobgroundwater/federation" class="button"><small>View project on</small>GitHub</a>
       </div>
     </header>
@@ -134,25 +134,32 @@ Once a match is found, the message is sent to the remote process.</p>
 
 <p><img src="https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png" alt="Routing"></p>
 
-<p>The <a href="https://github.com/jacobgroundwater/federation/blob/master/routes.json">default routing table</a> is a decoded from a JSON file.
-The table is formatted as an array,
-with highest priority matches defined first.
-Routes are matched on a first-to-match basis.</p>
+<p>Routers have a default local route.
+Any message matching the default route will be delivered locally.
+Additional routes can be defined in a JSON-encoded routes file:</p>
 
 <div class="highlight"><pre><span class="p">[</span>
   <span class="p">{</span>
     <span class="nt">"regex"</span><span class="p">:</span> <span class="s2">"hadoop/.*"</span><span class="p">,</span>
-    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.12/local"</span>
+    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.12/"</span>
   <span class="p">},</span>
   <span class="p">{</span>
     <span class="nt">"regex"</span><span class="p">:</span> <span class="s2">"mongo/.*"</span><span class="p">,</span>
-    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.122/local"</span>
+    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.122/"</span>
   <span class="p">}</span>
 <span class="p">]</span>
 </pre></div>
 
 <p>Incoming messages are matched in-order against the <code>regex</code> key.
-The first match wins, and the packet is forwarded to the gateway at the destination address.</p>
+The first match wins, and the packet is forwarded to the gateway at the destination address.
+The default route will always be matched last.</p>
+
+<p>The easiest way to add a routes file is by setting the <code>table_file</code> key:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">federation</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'federation'</span><span class="p">);</span>
+<span class="nx">federation</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">table_file</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ROUTES_FILE_PATH</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="nx">federation</span><span class="p">.</span><span class="nx">init</span><span class="p">().</span><span class="nx">director</span><span class="p">;</span>
+</pre></div>
 
 <p>See the example in <a href="https://github.com/jacobgroundwater/federation/tree/master/examples/multi-proc">Multi-Proc Example</a> for two-process routing table.
 Routes can be the same, or different hosts.</p>
