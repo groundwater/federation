@@ -2,7 +2,8 @@
 var fed   = require('../../index');
 var table = require('./lib').table;
 
-fed.defaults.http.PORT = 5012;
+fed.defaults.axon = null;
+fed.defaults.http = {PORT: 5012};
 fed.defaults.table     = table;
 
 var dir = fed.init().director;

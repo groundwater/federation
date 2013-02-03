@@ -4,9 +4,6 @@ var defaults = {
   axon      : {
     PORT: 8973
   },
-  http      :{
-    PORT: 8974
-  },
   table_file: routes_file
 }
 

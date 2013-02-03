@@ -38,12 +38,16 @@ function init(options){
   loopback.enqueue = loopback.receive;
   
   // Configure Axon push/pull Transport
-  var net_axon = gateway.createTransport('axon:');
-  axon.setupAxonTransport(net_axon,options['axon']);
+  if(options.axon){
+    var net_axon = gateway.createTransport('axon:');
+    axon.setupAxonTransport(net_axon,options['axon']);
+  }
   
   // HTTP Transport
-  // var net_http = gateway.createTransport('http:');
-  // http.setupHttpTransport(net_http,options['http']);
+  if(options.http){
+    var net_http = gateway.createTransport('http:');
+    http.setupHttpTransport(net_http,options['http']);
+  }
   
   // Configure Routes Table
   var table      = options['table'];
