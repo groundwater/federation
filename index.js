@@ -1,5 +1,6 @@
 var url       = require('url');
 var events    = require('events');
+var fs        = require('fs');
 
 // Import Default Transport Modules
 var axon      = require('./transports/axon');
@@ -58,6 +59,17 @@ function init(options){
   var table      = app.Table.New();
   var route      = app.Route.NewFromJSON(route_json);
   table.addRoute(1000000,route);
+  
+  // Load Optional Routes
+  if(options.table_file){
+    var table_json = fs.readFileSync(options.table_file);
+    var table_obj  = JSON.parse(table_json);
+    for(var i=0; i<table_obj.length; i++){
+      var rt_json  = table_obj[i];
+      var tb_route = app.Route.NewFromJSON(rt_json);
+      table.addRoute(i * 100,tb_route);
+    }
+  }
   
   // Configure Router
   var r_emit   = new events.EventEmitter();
