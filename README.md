@@ -102,10 +102,9 @@ Once a match is found, the message is sent to the remote process.
 
 ![Routing](https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png)
 
-The [default routing table](https://github.com/jacobgroundwater/federation/blob/master/routes.json) is a decoded from a JSON file.
-The table is formatted as an array,
-with highest priority matches defined first.
-Routes are matched on a first-to-match basis.
+Routers have a default local route.
+Any message matching the default route will be delivered locally.
+Additional routes can be defined in a JSON-encoded routes file:
 
 ```json
 [
@@ -122,6 +121,7 @@ Routes are matched on a first-to-match basis.
 
 Incoming messages are matched in-order against the `regex` key.
 The first match wins, and the packet is forwarded to the gateway at the destination address.
+The default route will always be matched last.
 
 See the example in [Multi-Proc Example](https://github.com/jacobgroundwater/federation/tree/master/examples/multi-proc) for two-process routing table.
 Routes can be the same, or different hosts.
