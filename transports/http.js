@@ -12,7 +12,10 @@ module.exports.init = function(transport,options){
     
     var dest = package.head.dst;
     
-    dest.method = 'POST';
+    dest.method  = 'POST';
+    dest.headers = {
+      'ContentType': 'application/json'
+    };
     
     var post = http.request(dest);
     
@@ -32,7 +35,9 @@ module.exports.init = function(transport,options){
     });
     req.on('end',function(){
       transport.receive( JSON.parse(buffer) );
-    })
+      rep.writeHead(204);
+      rep.end();
+    });
   });
   pull.listen(PULL_PORT);
   
