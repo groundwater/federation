@@ -76,6 +76,10 @@ function start(options){
   var loopback = gateway.createTransport();
   loopback.enqueue = loopback.receive;
   
+  // Transports are loaded dynamically
+  // 
+  // Loop over transports defined in `options` and
+  // attempt to load and initialize each transport
   var transports     = options.transports;
   var transport_keys = Object.keys(transports);
   
@@ -103,6 +107,9 @@ function start(options){
   table.addRoute(1000000,route);
   
   // Load Optional Routes
+  //
+  // Addtional routes can be loaded from a JSON file
+  // Pass the path to the file in as part of the init options `table_file`
   if(options.table_file){
     var table_json = fs.readFileSync(options.table_file);
     var table_obj  = JSON.parse(table_json);
