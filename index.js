@@ -1,4 +1,5 @@
 var url       = require('url');
+var path      = require('path');
 var events    = require('events');
 var fs        = require('fs');
 
@@ -25,7 +26,7 @@ app.Producer  = lib.producer  .forge(app);
 app.Route     = lib.route     .forge(app);
 app.Table     = lib.table     .forge(app);
 
-function init(options){
+function start(options){
   
   var outbox  = new events.EventEmitter();
   var inbox   = new events.EventEmitter();
@@ -39,17 +40,22 @@ function init(options){
   var loopback = gateway.createTransport();
   loopback.enqueue = loopback.receive;
   
-  // Configure Axon push/pull Transport
-  if(options.axon){
-    var net_axon = gateway.createTransport('axon:');
-    axon.setupAxonTransport(net_axon,options['axon']);
-  }
+  var transports     = options.transports;
+  var transport_keys = Object.keys(transports);
   
-  // HTTP Transport
-  if(options.http){
-    var net_http = gateway.createTransport('http:');
-    http.setupHttpTransport(net_http,options['http']);
-  }
+  transport_keys.forEach(function(key){
+    
+    var tran_options = transports[key];
+    var tran_module  = tran_options.module || 'transports/' + key;
+    var tran_path    = path.resolve(__dirname, tran_module);
+    var tran_setup   = require(tran_path);
+    
+    if(tran_options.disabled) return;
+    
+    var transport    = gateway.createTransport(key + ':');
+    tran_setup.init(transport,tran_options);
+    
+  });
   
   // Configure Routes Table
   var route_json = {
@@ -93,5 +99,5 @@ function init(options){
 module.exports.defaults = defaults;
 module.exports.init     = function(options){
   var opts = options || defaults;
-  return init(opts);
+  return start(opts);
 }

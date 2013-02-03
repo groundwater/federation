@@ -1,9 +1,9 @@
 // The Setup
 var fed   = require('../../index');
 
-fed.defaults.table_file = __dirname + '/routes.json';
-fed.defaults.axon = null;
-fed.defaults.http = {PORT: 5012};
+fed.defaults.table_file      = __dirname + '/routes.json';
+fed.defaults.transports.http = {PORT: 5012};
+delete fed.defaults.transports['axon'];
 
 var dir = fed.init().director;
 

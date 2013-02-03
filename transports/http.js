@@ -1,6 +1,6 @@
 var http = require('http');
 
-module.exports.setupHttpTransport = function(transport,options){
+module.exports.init = function(transport,options){
   
   var PULL_PORT = options.PORT || 8974;
   var PUSH_PORT = 8974;

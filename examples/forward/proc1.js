@@ -1,6 +1,6 @@
 var fed = require('../../index');
 
-fed.defaults.axon.PORT  = 5001;
+fed.defaults.transports.axon.PORT_BIND = 5001;
 fed.defaults.table_file = 'routes-procs.json';
 var prod = fed.init();
 var dir  = prod.director;
