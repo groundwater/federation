@@ -111,11 +111,11 @@ Routes are matched on a first-to-match basis.
 [
   {
     "regex": "hadoop/.*",
-    "address": "axon://10.0.1.12/local"
+    "address": "axon://10.0.1.12/"
   },
   {
     "regex": "mongo/.*",
-    "address": "axon://10.0.1.122/local"
+    "address": "axon://10.0.1.122/"
   }
 ]
 ```
