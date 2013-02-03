@@ -123,6 +123,14 @@ Incoming messages are matched in-order against the `regex` key.
 The first match wins, and the packet is forwarded to the gateway at the destination address.
 The default route will always be matched last.
 
+The easiest way to add a routes file is by setting the `table_file` key:
+
+```javascript
+var federation = require('federation');
+federation.defaults.table_file = process.env.ROUTES_FILE_PATH;
+var director = federation.init().director;
+```
+
 See the example in [Multi-Proc Example](https://github.com/jacobgroundwater/federation/tree/master/examples/multi-proc) for two-process routing table.
 Routes can be the same, or different hosts.
 
