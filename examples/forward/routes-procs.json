@@ -1,6 +1,6 @@
 [
   {
     "regex": ".*",
-    "address": "axon://localhost:5000/local"
+    "address": "axon://localhost:5000/"
   }
 ]

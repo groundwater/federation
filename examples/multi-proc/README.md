@@ -16,7 +16,7 @@ The last routes all un-matched messages back to the local set of actors.
 ```
 {
   "regex"   : ".*",
-  "address" : "/local"
+  "address" : "/"
 }
 ```
 

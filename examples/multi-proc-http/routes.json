@@ -1,14 +1,14 @@
 [
   {
     "regex":"bob",
-    "address":"http://127.0.0.1:5011/local"
+    "address":"http://127.0.0.1:5011/"
   },
   {
     "regex":"tom",
-    "address":"http://127.0.0.1:5012/local"
+    "address":"http://127.0.0.1:5012/"
   },
   {
     "regex"   : ".*",
-    "address" : "/local"
+    "address" : "/"
   }
 ]
