@@ -21,7 +21,8 @@ app.Actor     = lib.actor     .forge(app);
 app.Director  = lib.director  .forge(app);
 app.Router    = lib.router    .forge(app);
 app.Producer  = lib.producer  .forge(app);
-app.Routes    = lib.routes    .forge(app);
+app.Route     = lib.route     .forge(app);
+app.Table     = lib.table     .forge(app);
 
 function init(options){
   
@@ -50,17 +51,27 @@ function init(options){
   }
   
   // Configure Routes Table
-  var table      = options['table'];
-  var table_file = options['table_file'];
-  if(!table){
-    if(!table_file) throw new Error('No Routing Table Defined');
-    table = app.Routes.Load(table_file);
+  var route_json = {
+    regex: /.*/,
+    address: '/'
   }
+  var table      = app.Table.New();
+  var route      = app.Route.NewFromJSON(route_json);
+  table.addRoute(1000000,route);
   
   // Configure Router
-  var router   = app.Router.NewWithTable(table);
-  var local    = vertex.createNode();
-  var producer = app.Producer.NewWithRouterAndNode(router,local);
+  var r_emit   = new events.EventEmitter();
+  var router   = app.Router.NewWithTableAndEmitter(table,r_emit);
+  var node     = vertex.createNode();
+  var producer = app.Producer.NewWithRouter(router);
+  
+  r_emit.on('send',function(address,packet){
+    node.send(address,packet);
+  });
+  
+  node.receive = function(packet){
+    producer.enqueue(packet);
+  }
   
   // Producer Contains all Relevant Sub-Systems
   return producer;
