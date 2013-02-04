@@ -1,0 +1,6 @@
+[
+  {
+    "regex": "bob",
+    "broadcast": ["axon://localhost:5001/","axon://localhost:5002/"]
+  }
+]
