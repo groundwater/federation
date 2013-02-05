@@ -2,7 +2,7 @@
 
 # Introduction
 
-> Federation is a federated event emitter for distributed environments.
+> Federation is a federated message network for distributed environments
 
 Federation is inspired by Akka and Erlang,
 and borrows some semantics from the actor model.
