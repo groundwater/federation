@@ -11,7 +11,7 @@ The forge pattern is a dependency injection pattern that consists of three main 
 Most libraries implement this as follows:
 
 ```javascript
-/ The Class
+// The Class
 function Foo(){}
 
 // The Forge
