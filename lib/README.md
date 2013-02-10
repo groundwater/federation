@@ -10,7 +10,7 @@ The forge pattern is a dependency injection pattern that consists of three main 
 
 Most libraries implement this as follows:
 
-```
+```javascript
 / The Class
 function Foo(){}
 
@@ -31,7 +31,7 @@ The Forge object contains all of the classes constructors.
 Constructors have specific names like `NewWithNameAndEmitter`;
 there can be many different constructors.
 
-```
+```javascript
 FooForge.prototype.NewWithNameAndEmitter = function(name,emitter){
   var foo = new Foo();
   foo.name    = name;
