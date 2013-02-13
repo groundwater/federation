@@ -17,7 +17,9 @@ Most libraries implement this as follows:
 function Foo(){}
 
 // The Forge
-function FooForge(app){}
+function FooForge(app){
+  // Capture Dependencies
+}
 
 // The Dependency Injector
 module.exports.forge = function(app){
@@ -28,6 +30,18 @@ module.exports.forge = function(app){
 The `app` object represents the current set of injected dependencies.
 Libraries do not directly require one and other,
 their _Forge_ objects are created once on start and passed around in the `app` container.
+
+### Capture Dependencies
+
+The Forge object captures dependencies when created:
+
+```javascript
+function FooForge(app){
+  assert( this.Bar = app.Bar, 'Missing Dependency Bar' );
+}
+```
+
+### Constructor Methods
 
 The Forge object contains all of the classes constructors.
 Constructors have specific names like `NewWithNameAndEmitter`;
