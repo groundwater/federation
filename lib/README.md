@@ -8,6 +8,8 @@ The forge pattern is a dependency injection pattern that consists of three main 
 2. the forge description
 3. the dependency injector
 
+## Forgeable Module
+
 Most libraries implement this as follows:
 
 ```javascript
@@ -43,3 +45,18 @@ FooForge.prototype.NewWithNameAndEmitter = function(name,emitter){
 The actual class is never directly exported, there are reasons for this.
 The forge pattern is designed around the idea of encapsulation,
 and keeping things flexible.
+
+## App Container
+
+You create your application by forging each module using an app-container;
+
+```javascript
+var app = {};
+
+app.Module1 = require('./module1').forge(app);
+app.Module2 = require('./module2').forge(app);
+app.Module3 = require('./module3').forge(app);
+app.Module4 = require('./module4').forge(app);
+
+app.Module4.start();
+```
