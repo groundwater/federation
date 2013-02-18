@@ -1,18 +1,32 @@
-<!DOCTYPE html><html lang="en"><head><title>lib/actor</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/actor"><meta name="groc-project-path" content="lib/actor.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/actor.js">lib/actor.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Actor</span><span class="p">(</span><span class="nx">forge</span><span class="p">){</span>
+<!DOCTYPE html><html lang="en"><head><title>lib/actor</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/actor"><meta name="groc-project-path" content="lib/actor.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/actor.js">lib/actor.js</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h1 id="actor">Actor</h1>
+
+<p>Actors are the principal type used by Federation.
+Actors send and receive messages to other actors,
+anywhere, regardless of host.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Actor</span><span class="p">(</span><span class="nx">forge</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">forge</span>  <span class="o">=</span> <span class="nx">forge</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">Actor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">toName</span><span class="p">,</span><span class="nx">message</span><span class="p">,</span><span class="nx">callback</span><span class="p">){</span>
+<h2 id="ask">Ask</h2>
+
+<p>Send another actor on the network a message,
+expecting a reply.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Actor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ask</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">toName</span><span class="p">,</span><span class="nx">message</span><span class="p">,</span><span class="nx">callback</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;ask&#39;</span><span class="p">,</span><span class="nx">toName</span><span class="p">,</span><span class="nx">message</span><span class="p">,</span><span class="nx">callback</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">Actor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">tell</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">toName</span><span class="p">,</span><span class="nx">message</span><span class="p">){</span>
+<h2 id="tell">Tell</h2>
+
+<p>Send a one-off message to another actor on the network.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Actor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">tell</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">toName</span><span class="p">,</span><span class="nx">message</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;tell&#39;</span><span class="p">,</span><span class="nx">toName</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">Actor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){}</span>
+<h2 id="message-handler">Message Handler</h2>
 
-<span class="kd">function</span> <span class="nx">ActorForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+<p>Setup a message handler for the actor.
+The default handler just drops incoming messages silently.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Actor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="forge">Forge</h2></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">ActorForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
   
 <span class="p">}</span>
 
