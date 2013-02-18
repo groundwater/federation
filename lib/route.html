@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en"><head><title>lib/route</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/route"><meta name="groc-project-path" content="lib/route.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/route.js">lib/route.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">url</span>    <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">compileRegex</span><span class="p">(</span><span class="nx">regex</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">out</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">regex</span> <span class="k">instanceof</span> <span class="nb">RegExp</span><span class="p">){</span>
+    <span class="nx">out</span> <span class="o">=</span> <span class="nx">regex</span><span class="p">;</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="nx">out</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">regex</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">out</span><span class="p">;</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h1 id="route">Route</h1>
+
+<p>Create a single route of various types.
+Routes do the actual message sending, 
+so each route is free to implement its own
+sending behaviour.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Route</span><span class="p">(){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="interface-for-sending-messages">Interface for Sending Messages</h2>
+
+<p>Any route can implement the <code>send</code> interface.
+The channel passed is an event emitter,
+and messages can be sent with</p>
+
+<pre><code class="javascript">channel.emit('send',url,message);
+</code></pre></div></div><div class="code"><div class="wrapper"><span class="nx">Route</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">send</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">,</span><span class="nx">channel</span><span class="p">){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="basic-route">Basic Route</h2>
+
+<p>A basic route sends to a single remote host.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">BasicRoute</span><span class="p">(</span><span class="nx">regex</span><span class="p">,</span><span class="nx">address</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">regex</span>   <span class="o">=</span> <span class="nx">compileRegex</span><span class="p">(</span><span class="nx">regex</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">address</span> <span class="o">=</span> <span class="nx">address</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">BasicRoute</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">();</span>
+<span class="nx">BasicRoute</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">send</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">,</span><span class="nx">channel</span><span class="p">){</span>
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;send&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">address</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="load-balanced-route">Load Balanced Route</h2>
+
+<p>Load balanced routes maintain a list of remote hosts,
+each message is delivered to exactly one randomly chosen
+host from the list.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">LoadBalancedRoute</span><span class="p">(</span><span class="nx">regex</span><span class="p">,</span><span class="nx">addresses</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">regex</span>     <span class="o">=</span> <span class="nx">compileRegex</span><span class="p">(</span><span class="nx">regex</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">addresses</span> <span class="o">=</span> <span class="nx">addresses</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">modulus</span>   <span class="o">=</span> <span class="nx">addresses</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">index</span>     <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">LoadBalancedRoute</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">();</span>
+<span class="nx">LoadBalancedRoute</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">next</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="k">this</span><span class="p">.</span><span class="nx">modulus</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">addresses</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">index</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="nx">LoadBalancedRoute</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">send</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">,</span><span class="nx">channel</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
+  <span class="nx">channel</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;send&#39;</span><span class="p">,</span><span class="nx">next</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="broadcast-route">Broadcast Route</h2>
+
+<p>A broadcast route maintains a list of remote hosts,
+each messages is sent to <em>all</em> hosts on the list.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">BroadcastRoute</span><span class="p">(</span><span class="nx">regex</span><span class="p">,</span><span class="nx">addresses</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">regex</span>     <span class="o">=</span> <span class="nx">compileRegex</span><span class="p">(</span><span class="nx">regex</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">addresses</span> <span class="o">=</span> <span class="nx">addresses</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">BroadcastRoute</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">();</span>
+<span class="nx">BroadcastRoute</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">send</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">,</span><span class="nx">channel</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">addresses</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">address</span><span class="p">){</span>
+    <span class="nx">channel</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;send&#39;</span><span class="p">,</span><span class="nx">address</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="forge">Forge</h2></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">RouteForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h3 id="decode-from-json">Decode from JSON</h3>
+
+<p>Different route types are created from different JSON objects.
+Generally, you must specify one key <code>address</code>, <code>balance</code>, or <code>broadcast</code>.
+Specifying multiple keys is undefined behaviour.</p>
+
+<h4 id="basic-route">Basic Route</h4>
+
+<pre><code class="javascript">{ "regex"  : ".*",
+  "address": "axon://10.0.1.1/" }
+</code></pre>
+
+<h4 id="load-balanced-route">Load Balanced Route</h4>
+
+<pre><code class="javascript">{ "regex"  : ".*",
+  "balance": ["axon://10.0.1.1/","axon://10.0.1.2"]}
+</code></pre>
+
+<h4 id="broadcast-route">Broadcast Route</h4>
+
+<pre><code class="javascript">{ "regex"  : ".*",
+  "broadcast": ["axon://10.0.1.1/","axon://10.0.1.2"]}
+</code></pre></div></div><div class="code"><div class="wrapper"><span class="nx">RouteForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewFromJSON</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">json</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">route</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">address</span><span class="p">){</span>
+    <span class="nx">route</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BasicRoute</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">regex</span><span class="p">,</span><span class="nx">json</span><span class="p">.</span><span class="nx">address</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">balance</span><span class="p">){</span>
+    <span class="nx">route</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LoadBalancedRoute</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">regex</span><span class="p">,</span><span class="nx">json</span><span class="p">.</span><span class="nx">balance</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">broadcast</span><span class="p">){</span>
+    <span class="nx">route</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BroadcastRoute</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">regex</span><span class="p">,</span><span class="nx">json</span><span class="p">.</span><span class="nx">broadcast</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Cannot Parse Route&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">route</span><span class="p">;</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="dependency-injector">Dependency Injector</h2></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">RouteForge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="p">}</span></div></div></div></div></body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><title>lib/director</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/director"><meta name="groc-project-path" content="lib/director.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/director.js">lib/director.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Internal Constants</p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">EXTRA_TIMEOUT</span> <span class="o">=</span> <span class="mi">5000</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Class</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Director</span><span class="p">(</span><span class="nx">forge</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">forge</span>        <span class="o">=</span> <span class="nx">forge</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">actors</span>       <span class="o">=</span> <span class="p">{};</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">extras</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">max_forwards</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">timeout</span>      <span class="o">=</span> <span class="nx">EXTRA_TIMEOUT</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">Director</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">deleteActor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">){</span>
+  <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">actors</span><span class="p">[</span><span class="nx">path</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="nx">Director</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createExtra</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">basepath</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">basepath</span> <span class="o">+</span> <span class="s1">&#39;/extra-&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">extras</span><span class="o">++</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">createActor</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Director</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createActor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">emitter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">actor</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">forge</span><span class="p">.</span><span class="nx">Actor</span><span class="p">.</span><span class="nx">NewWithEmitter</span><span class="p">(</span><span class="nx">emitter</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">self</span>    <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  
+  <span class="nx">emitter</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;ask&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">toPath</span><span class="p">,</span><span class="nx">message</span><span class="p">,</span><span class="nx">callback</span><span class="p">){</span>
+    
+    <span class="kd">var</span> <span class="nx">extra</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">createExtra</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Return an Error on Timeout</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="s1">&#39;TIMEOUT&#39;</span><span class="p">);</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">deleteActor</span><span class="p">(</span><span class="nx">extra</span><span class="p">);</span>
+    <span class="p">},</span> <span class="nx">self</span><span class="p">.</span><span class="nx">timeout</span><span class="p">);</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Return Message on Success</p></div></div><div class="code"><div class="wrapper">    <span class="nx">extra</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+      <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timer</span><span class="p">);</span>
+      <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">deleteActor</span><span class="p">(</span><span class="nx">extra</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">extra</span><span class="p">.</span><span class="nx">tell</span><span class="p">(</span><span class="nx">toPath</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
+    
+  <span class="p">});</span>
+  
+  <span class="nx">emitter</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;tell&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">toPath</span><span class="p">,</span><span class="nx">message</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">packet</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">toPath</span>   <span class="o">:</span> <span class="nx">toPath</span><span class="p">,</span>
+      <span class="nx">fromPath</span> <span class="o">:</span> <span class="nx">path</span><span class="p">,</span>
+      <span class="nx">message</span>  <span class="o">:</span> <span class="nx">message</span>
+    <span class="p">}</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;enqueue&#39;</span><span class="p">,</span><span class="nx">packet</span><span class="p">);</span>
+  <span class="p">});</span>
+  
+  <span class="k">this</span><span class="p">.</span><span class="nx">actors</span><span class="p">[</span><span class="nx">path</span><span class="p">]</span> <span class="o">=</span> <span class="nx">actor</span><span class="p">;</span>
+  
+  <span class="k">return</span> <span class="nx">actor</span><span class="p">;</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Post a Message for Local Delivery or Forwarding</p></div></div><div class="code"><div class="wrapper"><span class="nx">Director</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enqueue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">fromPath</span> <span class="o">=</span> <span class="nx">packet</span><span class="p">.</span><span class="nx">fromPath</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">toPath</span>   <span class="o">=</span> <span class="nx">packet</span><span class="p">.</span><span class="nx">toPath</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">message</span>  <span class="o">=</span> <span class="nx">packet</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">actor</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">actors</span><span class="p">[</span><span class="nx">toPath</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">actor</span><span class="p">){</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Handle Message with Local Actor</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">reply</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+      <span class="nx">actor</span><span class="p">.</span><span class="nx">tell</span><span class="p">(</span><span class="nx">fromPath</span><span class="p">,</span><span class="nx">message</span><span class="p">);</span>
+    <span class="p">}</span>
+    </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Process Message in Clean Stack</p></div></div><div class="code"><div class="wrapper">    <span class="nx">process</span><span class="p">.</span><span class="nx">nextTick</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="nx">actor</span><span class="p">.</span><span class="nx">onMessage</span><span class="p">(</span><span class="nx">message</span><span class="p">,</span><span class="nx">reply</span><span class="p">);</span>
+    <span class="p">});</span>
+    
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>The Path Failed to Match a Local Actor</p></div></div><div class="code"><div class="wrapper">    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">packet</span><span class="p">.</span><span class="nx">count</span><span class="p">)</span> <span class="nx">packet</span><span class="p">.</span><span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">packet</span><span class="p">.</span><span class="nx">count</span><span class="o">++</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max_forwards</span> <span class="p">){</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Forward the Message Base on Routing Table</p></div></div><div class="code"><div class="wrapper">      <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;enqueue&#39;</span><span class="p">,</span><span class="nx">packet</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Drop Message</p></div></div><div class="code"><div class="wrapper">      <span class="k">this</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;dropped&#39;</span><span class="p">,</span><span class="nx">packet</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Forge</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">DirectorForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="nx">assert</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">Actor</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Actor</span><span class="p">,</span> <span class="s1">&#39;Missing Dependency Actor&#39;</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">DirectorForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">New</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">Director</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">DirectorForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewWithEmitter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">emitter</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">director</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">New</span><span class="p">();</span>
+  <span class="nx">director</span><span class="p">.</span><span class="nx">events</span> <span class="o">=</span> <span class="nx">emitter</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">director</span><span class="p">;</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Export</p></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">DirectorForge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="p">}</span></div></div></div></div></body></html>

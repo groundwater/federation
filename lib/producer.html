@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>lib/producer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/producer"><meta name="groc-project-path" content="lib/producer.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/producer.js">lib/producer.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>The Producer provides the Modules Client API</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Producer</span><span class="p">(</span><span class="nx">forge</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">forge</span>  <span class="o">=</span> <span class="nx">forge</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">Producer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enqueue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">director</span><span class="p">.</span><span class="nx">enqueue</span><span class="p">(</span><span class="nx">packet</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">ProducerForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="nx">assert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">Director</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Director</span><span class="p">,</span> <span class="s1">&#39;Missing Dependency Director&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">ProducerForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">New</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">Producer</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">ProducerForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewWithRouter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">router</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">producer</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">New</span><span class="p">();</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Receive Director Events from Emitter</p></div></div><div class="code"><div class="wrapper">  <span class="kd">var</span> <span class="nx">dir_emit</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">Director</span><span class="p">.</span><span class="nx">NewWithEmitter</span><span class="p">(</span><span class="nx">dir_emit</span><span class="p">);</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Pass Message to Director</p></div></div><div class="code"><div class="wrapper">  <span class="nx">dir_emit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;enqueue&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
+    <span class="nx">router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="nx">packet</span><span class="p">);</span>
+  <span class="p">});</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Dropped Messages are Undelivered</p></div></div><div class="code"><div class="wrapper">  <span class="nx">dir_emit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;dropped&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Message Dropped from %s to %s&#39;</span><span class="p">,</span><span class="nx">packet</span><span class="p">.</span><span class="nx">fromPath</span><span class="p">,</span><span class="nx">packet</span><span class="p">.</span><span class="nx">toPath</span><span class="p">);</span>
+  <span class="p">});</span>
+  
+  <span class="nx">producer</span><span class="p">.</span><span class="nx">director</span> <span class="o">=</span> <span class="nx">director</span><span class="p">;</span>
+  <span class="nx">producer</span><span class="p">.</span><span class="nx">router</span>   <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
+  
+  <span class="k">return</span> <span class="nx">producer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">ProducerForge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="p">}</span></div></div></div></div></body></html>

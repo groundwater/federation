@@ -1,220 +1,111 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Federation by jacobgroundwater</title>
-  </head>
-
-  <body>
-    <header>
-      <div class="inner">
-        <h1>Federation</h1>
-        <h2>A Distributed Message Network in Node.js</h2>
-        <a href="https://github.com/jacobgroundwater/federation" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
-
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <p><img src="http://i.imgur.com/T5kIkxX.jpg" alt="Awesome Picard Meme"></p>
-
-<h1>Introduction</h1>
-
-<blockquote>
-<p>Federation is a federated message network for distributed environments</p>
-</blockquote>
-
-<p>Federation is inspired by Akka and Erlang,
-and borrows some semantics from the actor model.
-While there <em>are</em> actors,
-many features familiar to Akka and Erlang are not included.
-Federation prioritizes being useful to the Node.js community
-over being faithful to the pure actor model.</p>
-
-<p>Federation considers cross-process and cross-host messaging to be the top priority. 
-It has been designed to sit <em>above</em> an application protocol like <code>axon</code> or <code>http</code>, and can be extended to any other protocol quite easily.</p>
-
-<h1>Contributors</h1>
-
-<p>A good module evolves to meet the needs of the community.
-There are many ways you can help.
-Pull-requests are always welcome, but you don't have to be a programming expert to lend a hand.</p>
-
-<ol>
-<li>
-<a href="https://github.com/jacobgroundwater/federation/issues/new">ask a question</a> about using federation, your question may help others</li>
-<li>
-<a href="https://github.com/jacobgroundwater/federation/issues/new">suggest an enhancement</a>, suggestions can help prioritize features</li>
-<li>
-<a href="https://github.com/jacobgroundwater/federation/wiki/Success-Stories">tell us your success stories</a>, how have you used federation, and what tips do you have for others?</li>
-</ol><h1>Install</h1>
-
-<pre><code>$ npm install federation
+<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="index.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/index.js">index.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">url</span>       <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">path</span>      <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">events</span>    <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fs</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Import Default Transport Modules</p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">axon</span>      <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./transports/axon&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">http</span>      <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./transports/http&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Application Defaults</p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">defaults</span>  <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./defaults&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Configure Application Dependencies</p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">lib</span>       <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./lib&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="p">{}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Dependency Injection Magic</p></div></div><div class="code"><div class="wrapper"><span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><pre><code>        o
+             O       /`-.__
+                    /  \·'^|
+       o           T    l  *
+                  _|-..-|_
+           O    (^ '----' `)
+                 `\-....-/^   Dependicus Injectus
+       O       o  ) "/ " (
+                 _( (-)  )_
+             O  /\ )    (  /\
+               /  \(    ) |  \
+           o  o    \)  ( /    \
+             /     |(  )|      \
+            /    o \ \( /       \
+      __.--'   O    \_ /   .._   \
+     //|)\      ,   (_)   /(((\^)'\
+        |       | O         )  `  |
+        |      / o___      /      /
+       /  _.-''^^__O_^^''-._     /
+     .'  /  -''^^    ^^''-  \--'^
+   .'   .`.  `'''----'''^  .`. \
+ .'    /   `'--..____..--'^   \ \
+/  _.-/                        \ \
 </code></pre>
 
-<h1>Usage</h1>
+<p>.::'<em>/^   |                        |  <code>.
+       .-'|                        |</code>-.
+ _.--'<code>\                        /</code>-.
+/          \                      /           <code>-._
+</code>'---..</em>_   <code>.                  .´_.._   __       \
+         ``'''</code>.              .'      <code>'^</code>''---'^
+                `-..<strong>__</strong>..-'</p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">Node</span>      <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">node</span>      <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Transport</span> <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">transport</span> <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Vertex</span>    <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">vertex</span>    <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Gateway</span>   <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">gateway</span>   <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Hub</span>       <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">hub</span>       <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Actor</span>     <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">actor</span>     <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Director</span>  <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">director</span>  <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Router</span>    <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">router</span>    <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Producer</span>  <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">producer</span>  <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Route</span>     <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">route</span>     <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">Table</span>     <span class="o">=</span> <span class="nx">lib</span><span class="p">.</span><span class="nx">table</span>     <span class="p">.</span><span class="nx">forge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>This is the messy stuff, but thankfully most of the mess
+is contained here. Over time, the logic defined here should
+be refactored into its own modules.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">start</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+  
+  <span class="kd">var</span> <span class="nx">outbox</span>  <span class="o">=</span> <span class="k">new</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">inbox</span>   <span class="o">=</span> <span class="k">new</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">();</span>
+  
+  <span class="kd">var</span> <span class="nx">hub</span>     <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">NewWithEmitters</span><span class="p">(</span><span class="nx">inbox</span><span class="p">,</span><span class="nx">outbox</span><span class="p">);</span>
+  
+  <span class="kd">var</span> <span class="nx">gateway</span> <span class="o">=</span> <span class="nx">hub</span><span class="p">.</span><span class="nx">createGateway</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">vertex</span>  <span class="o">=</span> <span class="nx">hub</span><span class="p">.</span><span class="nx">createVertex</span><span class="p">();</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Create a Loopback Interface for Protocol-less Addresses</p></div></div><div class="code"><div class="wrapper">  <span class="kd">var</span> <span class="nx">loopback</span> <span class="o">=</span> <span class="nx">gateway</span><span class="p">.</span><span class="nx">createTransport</span><span class="p">();</span>
+  <span class="nx">loopback</span><span class="p">.</span><span class="nx">enqueue</span> <span class="o">=</span> <span class="nx">loopback</span><span class="p">.</span><span class="nx">receive</span><span class="p">;</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Transports are loaded dynamically</p>
 
-<p>Every actor has a name, and can receive messages at that name.</p>
-
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'federation'</span><span class="p">).</span><span class="nx">init</span><span class="p">().</span><span class="nx">director</span><span class="p">;</span>
-
-<span class="kd">var</span> <span class="nx">actorBob</span> <span class="o">=</span> <span class="nx">director</span><span class="p">.</span><span class="nx">createActor</span><span class="p">(</span><span class="s1">'bob'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">actorTom</span> <span class="o">=</span> <span class="nx">director</span><span class="p">.</span><span class="nx">createActor</span><span class="p">(</span><span class="s1">'tom'</span><span class="p">);</span>
-</pre></div>
-
-<h2>Send a Message</h2>
-
-<p>Federation nodes can send and receive messages to each other.
-Actors <code>tell</code> each other messages with:</p>
-
-<div class="highlight"><pre><span class="nx">actorBob</span><span class="p">.</span><span class="nx">tell</span><span class="p">(</span><span class="s1">'tom'</span><span class="p">,</span><span class="s1">'Good Morning'</span><span class="p">);</span>
-</pre></div>
-
-<p>Telling a message is a fire-and-forget approach.</p>
-
-<h2>Receive Messages</h2>
-
-<p>Actors receive messages by binding a callback to their <code>onMessage</code> property:</p>
-
-<div class="highlight"><pre><span class="nx">actorTom</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Got Message:'</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-
-<p>The callback will be invoked as a method, so <code>this</code> resolves to the actor object.</p>
-
-<div class="highlight"><pre><span class="nx">actorTom</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">tell</span><span class="p">(</span><span class="s1">'joe'</span><span class="p">,</span><span class="s1">'Got Message!'</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-
-<h2>Request-Reply Pattern</h2>
-
-<p>Actors can also <code>ask</code> other actors questions that will receive replies.</p>
-
-<div class="highlight"><pre><span class="nx">actorBob</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="s1">'tom'</span><span class="p">,</span><span class="s1">'Are you happy?'</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">happy</span><span class="p">){</span>
-  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error Asking Tom:'</span><span class="p">,</span><span class="nx">err</span><span class="p">);</span>
-  <span class="k">if</span><span class="p">(</span><span class="nx">happy</span><span class="p">){</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tom is Happy'</span><span class="p">);</span>
-  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tom is Not Happy'</span><span class="p">);</span>
+<p>Loop over transports defined in <code>options</code> and
+attempt to load and initialize each transport</p></div></div><div class="code"><div class="wrapper">  <span class="kd">var</span> <span class="nx">transports</span>     <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">transports</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">transport_keys</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">transports</span><span class="p">);</span>
+  
+  <span class="nx">transport_keys</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">){</span>
+    
+    <span class="kd">var</span> <span class="nx">tran_options</span> <span class="o">=</span> <span class="nx">transports</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">tran_module</span>  <span class="o">=</span> <span class="nx">tran_options</span><span class="p">.</span><span class="nx">module</span> <span class="o">||</span> <span class="s1">&#39;transports/&#39;</span> <span class="o">+</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">tran_path</span>    <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="nx">tran_module</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">tran_setup</span>   <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="nx">tran_path</span><span class="p">);</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="nx">tran_options</span><span class="p">.</span><span class="nx">disabled</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    
+    <span class="kd">var</span> <span class="nx">transport</span>    <span class="o">=</span> <span class="nx">gateway</span><span class="p">.</span><span class="nx">createTransport</span><span class="p">(</span><span class="nx">key</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span><span class="p">);</span>
+    <span class="nx">tran_setup</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">transport</span><span class="p">,</span><span class="nx">tran_options</span><span class="p">);</span>
+    
+  <span class="p">});</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Configure Routes Table</p></div></div><div class="code"><div class="wrapper">  <span class="kd">var</span> <span class="nx">route_json</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">regex</span><span class="o">:</span> <span class="sr">/.*/</span><span class="p">,</span>
+    <span class="nx">address</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span>
   <span class="p">}</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>The request-reply pattern uses anonymous actors known as <strong>extras</strong>.
-An extra has a limited life span of <code>5000</code> by default.
-If the timeout occurs before a reply is delivered,
-a <code>TIMEOUT</code> error will be send to your callback.</p>
-
-<h1>Routing</h1>
-
-<p>Federation supports inter-process communication,
-and abstracts the details away from the programmer.</p>
-
-<p>Actors have names, any name you like.
-The nameing convention is up to you,
-but choosing a good convention will make routing easier.
-Each process has its own router and routing table.
-Since messages are addressed to other actors by name,
-the router matches names to URLs.
-Once a match is found, the message is sent to the remote process.</p>
-
-<p><img src="https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png" alt="Routing"></p>
-
-<p>Routers have a default local route.
-Any message matching the default route will be delivered locally.
-Additional routes can be defined in a JSON-encoded routes file:</p>
-
-<div class="highlight"><pre><span class="p">[</span>
-  <span class="p">{</span>
-    <span class="nt">"regex"</span><span class="p">:</span> <span class="s2">"hadoop/.*"</span><span class="p">,</span>
-    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.12/"</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nt">"regex"</span><span class="p">:</span> <span class="s2">"mongo/.*"</span><span class="p">,</span>
-    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.122/"</span>
+  <span class="kd">var</span> <span class="nx">table</span>      <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Table</span><span class="p">.</span><span class="nx">New</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">route</span>      <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">NewFromJSON</span><span class="p">(</span><span class="nx">route_json</span><span class="p">);</span>
+  <span class="nx">table</span><span class="p">.</span><span class="nx">addRoute</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span><span class="nx">route</span><span class="p">);</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Load Optional Routes</p></div></div><div class="code"><div class="wrapper">  <span class="c1">//</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Addtional routes can be loaded from a JSON file
+Pass the path to the file in as part of the init options <code>table_file</code></p></div></div><div class="code"><div class="wrapper">  <span class="k">if</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">table_file</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">table_json</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">table_file</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">table_obj</span>  <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">table_json</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">table_obj</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">rt_json</span>  <span class="o">=</span> <span class="nx">table_obj</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+      <span class="kd">var</span> <span class="nx">tb_route</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">NewFromJSON</span><span class="p">(</span><span class="nx">rt_json</span><span class="p">);</span>
+      <span class="nx">table</span><span class="p">.</span><span class="nx">addRoute</span><span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span><span class="nx">tb_route</span><span class="p">);</span>
+    <span class="p">}</span>
   <span class="p">}</span>
-<span class="p">]</span>
-</pre></div>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Configure Router</p></div></div><div class="code"><div class="wrapper">  <span class="kd">var</span> <span class="nx">r_emit</span>   <span class="o">=</span> <span class="k">new</span> <span class="nx">events</span><span class="p">.</span><span class="nx">EventEmitter</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">router</span>   <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Router</span><span class="p">.</span><span class="nx">NewWithTableAndEmitter</span><span class="p">(</span><span class="nx">table</span><span class="p">,</span><span class="nx">r_emit</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">node</span>     <span class="o">=</span> <span class="nx">vertex</span><span class="p">.</span><span class="nx">createNode</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">producer</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Producer</span><span class="p">.</span><span class="nx">NewWithRouter</span><span class="p">(</span><span class="nx">router</span><span class="p">);</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Bind router events to the node handling message transport</p></div></div><div class="code"><div class="wrapper">  <span class="nx">r_emit</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;send&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">address</span><span class="p">,</span><span class="nx">packet</span><span class="p">){</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">address</span><span class="p">,</span><span class="nx">packet</span><span class="p">);</span>
+  <span class="p">});</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Route incoming node messages to the producer -> directory -> actor</p></div></div><div class="code"><div class="wrapper">  <span class="nx">node</span><span class="p">.</span><span class="nx">receive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
+    <span class="nx">producer</span><span class="p">.</span><span class="nx">enqueue</span><span class="p">(</span><span class="nx">packet</span><span class="p">);</span>
+  <span class="p">}</span>
+  </div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Producer Contains all Relevant Sub-Systems</p></div></div><div class="code"><div class="wrapper">  <span class="k">return</span> <span class="nx">producer</span><span class="p">;</span>
 
-<p>Incoming messages are matched in-order against the <code>regex</code> key.
-The first match wins, and the packet is forwarded to the gateway at the destination address.
-The default route will always be matched last.</p>
-
-<p>The easiest way to add a routes file is by setting the <code>table_file</code> key:</p>
-
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">federation</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'federation'</span><span class="p">);</span>
-<span class="nx">federation</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">table_file</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ROUTES_FILE_PATH</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="nx">federation</span><span class="p">.</span><span class="nx">init</span><span class="p">().</span><span class="nx">director</span><span class="p">;</span>
-</pre></div>
-
-<p>See the example in <a href="https://github.com/jacobgroundwater/federation/tree/master/examples/multi-proc">Multi-Proc Example</a> for two-process routing table.
-Routes can be the same, or different hosts.</p>
-
-<h1>Documentation</h1>
-
-<p>Comprehensive documentation is kept in the <a href="https://github.com/jacobgroundwater/federation/wiki">wiki</a>.</p>
-
-<p>The wiki is open to anyone for improvement.
-Feel free to make constructive edits.
-If you are not sure about making a change,
-please ask first on the <a href="https://github.com/jacobgroundwater/federation/issues/new">issue tracker</a>.</p>
-
-<h1>Todo</h1>
-
-<p>The todo list is maintained under the <a href="https://github.com/jacobgroundwater/federation/issues?labels=enhancement&amp;page=1&amp;state=open">issue tracker</a></p>
-
-<h1>License</h1>
-
-<p>Copyright (c) 2013 Jacob Groundwater (<a href="mailto:groundwater@gmail.com">groundwater@gmail.com</a>)</p>
-
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/jacobgroundwater/federation/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/jacobgroundwater/federation/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/jacobgroundwater/federation"></a> is maintained by <a href="https://github.com/jacobgroundwater">jacobgroundwater</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
-
-            <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-25329958-6");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-
-  </body>
-</html>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Expose defaults</p></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">defaults</span> <span class="o">=</span> <span class="nx">defaults</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Go Baby Go!</p></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">init</span>     <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="nx">defaults</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">start</span><span class="p">(</span><span class="nx">opts</span><span class="p">);</span>
+<span class="p">}</span></div></div></div></div></body></html>
