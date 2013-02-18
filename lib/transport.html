@@ -1,22 +1,38 @@
-<!DOCTYPE html><html lang="en"><head><title>lib/transport</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/transport"><meta name="groc-project-path" content="lib/transport.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/transport.js">lib/transport.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span>
+<!DOCTYPE html><html lang="en"><head><title>lib/transport</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/transport"><meta name="groc-project-path" content="lib/transport.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/transport.js">lib/transport.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">events</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="kd">function</span> <span class="nx">Transport</span><span class="p">(){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Receive an Incoming Packet</p></div></div><div class="code"><div class="wrapper"><span class="nx">Transport</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">receive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
+<h2 id="transport">Transport</h2></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Transport</span><span class="p">(){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h3 id="receive">Receive</h3>
+
+<p>Receive an incoming packet from a wire protocol.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Transport</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">receive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">packet</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">emitter</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span><span class="nx">packet</span><span class="p">);</span>
-<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>Enqueue an Outgoing Packet</p></div></div><div class="code"><div class="wrapper"><span class="nx">Transport</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enqueue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h3 id="enqueue">Enqueue</h3>
+
+<p>Enqueue a message for outgoing packets.
+The enqueue function must be overriden to be functional.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Transport</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enqueue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Enqueue Called on Empty Handler&#39;</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="kd">function</span> <span class="nx">TransportForge</span><span class="p">(){}</span>
+<h2 id="forge">Forge</h2></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">TransportForge</span><span class="p">(){}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">TransportForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">New</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<h3 id="new">New</h3>
+
+<p>Create an empty transport.</p></div></div><div class="code"><div class="wrapper"><span class="nx">TransportForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">New</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="k">return</span> <span class="k">new</span> <span class="nx">Transport</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nx">TransportForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewWithEmitter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">emitter</span><span class="p">){</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h3 id="newwithemitter">NewWithEmitter</h3>
+
+<p>Create a transport with associated emitter.
+The attached emitter will be called with signature
+<code>emitter.emit('message',packet)</code>.</p></div></div><div class="code"><div class="wrapper"><span class="nx">TransportForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewWithEmitter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">emitter</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">transport</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">New</span><span class="p">();</span>
   <span class="nx">transport</span><span class="p">.</span><span class="nx">emitter</span> <span class="o">=</span> <span class="nx">emitter</span><span class="p">;</span>
   <span class="k">return</span> <span class="nx">transport</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+<h2 id="dependency-injector">Dependency Injector</h2></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
   <span class="k">return</span> <span class="k">new</span> <span class="nx">TransportForge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
 <span class="p">}</span></div></div></div></div></body></html>

@@ -1,12 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><title>lib/vertex</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/vertex"><meta name="groc-project-path" content="lib/vertex.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/vertex.js">lib/vertex.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">);</span>
+<!DOCTYPE html><html lang="en"><head><title>lib/vertex</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="lib/vertex"><meta name="groc-project-path" content="lib/vertex.js"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/lib/vertex.js">lib/vertex.js</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;assert&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="kd">function</span> <span class="nx">Vertex</span><span class="p">(</span><span class="nx">forge</span><span class="p">){</span>
+<h2 id="vertex">Vertex</h2>
+
+<p>The vertex passes messages to nodes.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Vertex</span><span class="p">(</span><span class="nx">forge</span><span class="p">){</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="nx">forge</span><span class="p">;</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">nodes</span> <span class="o">=</span> <span class="p">{};</span>
   <span class="k">this</span><span class="p">.</span><span class="nx">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enqueue</span>    <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+<h3 id="enqueue">Enqueue</h3>
+
+<p>Enqueue a message for delivery to a local node.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enqueue</span>    <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">message</span><span class="p">.</span><span class="nx">head</span><span class="p">.</span><span class="nx">dst</span><span class="p">.</span><span class="nx">path</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">nodes</span><span class="p">[</span><span class="nx">path</span><span class="p">];</span>
   
@@ -18,8 +22,11 @@
   <span class="p">}</span>
   
   <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h3 id="create-a-node">Create a Node</h3>
+
+<p>Create a new node at the given name.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">createNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
   
   <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">name</span><span class="p">)</span> <span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   
@@ -29,25 +36,33 @@
   
   <span class="k">return</span> <span class="nx">node</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">deleteNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>TODO</p></div></div><div class="code"><div class="wrapper"><span class="p">}</span>
+<span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">deleteNode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>TODO</p></div></div><div class="code"><div class="wrapper"><span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">emitter</span>    <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<h3 id="emitter-property">Emitter Property</h3>
 
-<span class="kd">function</span> <span class="nx">VertexForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+<p>Vertex has a public emitter property.</p></div></div><div class="code"><div class="wrapper"><span class="nx">Vertex</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">emitter</span>    <span class="o">=</span> <span class="kc">null</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h2 id="forge">Forge</h2></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">VertexForge</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
   <span class="nx">assert</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">Node</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">Node</span><span class="p">,</span> <span class="s1">&#39;Missing Dependency Node&#39;</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">VertexForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">New</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+<h3 id="new-vertex">New Vertex</h3>
+
+<p>Create a new empty <code>Vertex</code>.</p></div></div><div class="code"><div class="wrapper"><span class="nx">VertexForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">New</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
   <span class="k">return</span> <span class="k">new</span> <span class="nx">Vertex</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nx">VertexForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewWithEmitter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">emitter</span><span class="p">){</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
+
+<h3 id="new-with-emitter">New with Emitter</h3>
+
+<p>Attach an event emitter to a new <code>Vertex</code>.
+The emitter is a public property of the vertex.</p></div></div><div class="code"><div class="wrapper"><span class="nx">VertexForge</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">NewWithEmitter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">emitter</span><span class="p">){</span>
   <span class="kd">var</span> <span class="nx">vertex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">New</span><span class="p">();</span>
   
   <span class="nx">vertex</span><span class="p">.</span><span class="nx">emitter</span> <span class="o">=</span> <span class="nx">emitter</span><span class="p">;</span>
   
   <span class="k">return</span> <span class="nx">vertex</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><hr />
 
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+<h2 id="dependency-injector">Dependency Injector</h2></div></div><div class="code"><div class="wrapper"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">forge</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
   <span class="k">return</span> <span class="k">new</span> <span class="nx">VertexForge</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
 <span class="p">}</span></div></div></div></div></body></html>
