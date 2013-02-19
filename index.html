@@ -1,9 +1,39 @@
-<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/jacobgroundwater/federation"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/jacobgroundwater/federation/blob/master/README.md">README.md</a></div></div><div id="document"><div class="segment"><div class="comments"><div class="wrapper"><p><img src="http://i.imgur.com/T5kIkxX.jpg" alt="Awesome Picard Meme" title="" /></p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-<h1 id="introduction">Introduction</h1>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Federation by jacobgroundwater</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Federation</h1>
+        <h2>A Federated Message Network in Node.js</h2>
+        <a href="https://github.com/jacobgroundwater/federation" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><img src="http://i.imgur.com/T5kIkxX.jpg" alt="Awesome Picard Meme"></p>
+
+<h1>Introduction</h1>
 
 <blockquote>
-  <p>Federation is a federated message network for distributed environments</p>
+<p>Federation is a federated message network for distributed environments</p>
 </blockquote>
 
 <p>Federation is inspired by Akka and Erlang,
@@ -16,79 +46,80 @@ over being faithful to the pure actor model.</p>
 <p>Federation considers cross-process and cross-host messaging to be the top priority. 
 It has been designed to sit <em>above</em> an application protocol like <code>axon</code> or <code>http</code>, and can be extended to any other protocol quite easily.</p>
 
-<h1 id="contributors">Contributors</h1>
+<h1>Contributors</h1>
 
 <p>A good module evolves to meet the needs of the community.
 There are many ways you can help.
 Pull-requests are always welcome, but you don't have to be a programming expert to lend a hand.</p>
 
 <ol>
-<li><a href="https://github.com/jacobgroundwater/federation/issues/new">ask a question</a> about using federation, your question may help others</li>
-<li><a href="https://github.com/jacobgroundwater/federation/issues/new">suggest an enhancement</a>, suggestions can help prioritize features</li>
-<li><a href="https://github.com/jacobgroundwater/federation/wiki/Success-Stories">tell us your success stories</a>, how have you used federation, and what tips do you have for others?</li>
-</ol>
-
-<h1 id="install">Install</h1>
+<li>
+<a href="https://github.com/jacobgroundwater/federation/issues/new">ask a question</a> about using federation, your question may help others</li>
+<li>
+<a href="https://github.com/jacobgroundwater/federation/issues/new">suggest an enhancement</a>, suggestions can help prioritize features</li>
+<li>
+<a href="https://github.com/jacobgroundwater/federation/wiki/Success-Stories">tell us your success stories</a>, how have you used federation, and what tips do you have for others?</li>
+</ol><h1>Install</h1>
 
 <pre><code>$ npm install federation
 </code></pre>
 
-<h1 id="usage">Usage</h1>
+<h1>Usage</h1>
 
 <p>Every actor has a name, and can receive messages at that name.</p>
 
-<pre><code class="javascript">var director = require('federation').init().director;
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'federation'</span><span class="p">).</span><span class="nx">init</span><span class="p">().</span><span class="nx">director</span><span class="p">;</span>
 
-var actorBob = director.createActor('bob');
-var actorTom = director.createActor('tom');
-</code></pre>
+<span class="kd">var</span> <span class="nx">actorBob</span> <span class="o">=</span> <span class="nx">director</span><span class="p">.</span><span class="nx">createActor</span><span class="p">(</span><span class="s1">'bob'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">actorTom</span> <span class="o">=</span> <span class="nx">director</span><span class="p">.</span><span class="nx">createActor</span><span class="p">(</span><span class="s1">'tom'</span><span class="p">);</span>
+</pre></div>
 
-<h2 id="send-a-message">Send a Message</h2>
+<h2>Send a Message</h2>
 
 <p>Federation nodes can send and receive messages to each other.
 Actors <code>tell</code> each other messages with:</p>
 
-<pre><code class="javascript">actorBob.tell('tom','Good Morning');
-</code></pre>
+<div class="highlight"><pre><span class="nx">actorBob</span><span class="p">.</span><span class="nx">tell</span><span class="p">(</span><span class="s1">'tom'</span><span class="p">,</span><span class="s1">'Good Morning'</span><span class="p">);</span>
+</pre></div>
 
 <p>Telling a message is a fire-and-forget approach.</p>
 
-<h2 id="receive-messages">Receive Messages</h2>
+<h2>Receive Messages</h2>
 
 <p>Actors receive messages by binding a callback to their <code>onMessage</code> property:</p>
 
-<pre><code class="javascript">actorTom.onMessage = function(message){
-  console.log('Got Message:', message);
-}
-</code></pre>
+<div class="highlight"><pre><span class="nx">actorTom</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Got Message:'</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
 
 <p>The callback will be invoked as a method, so <code>this</code> resolves to the actor object.</p>
 
-<pre><code class="javascript">actorTom.onMessage = function(message){
-  this.tell('joe','Got Message!');
-}
-</code></pre>
+<div class="highlight"><pre><span class="nx">actorTom</span><span class="p">.</span><span class="nx">onMessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">tell</span><span class="p">(</span><span class="s1">'joe'</span><span class="p">,</span><span class="s1">'Got Message!'</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
 
-<h2 id="request-reply-pattern">Request-Reply Pattern</h2>
+<h2>Request-Reply Pattern</h2>
 
 <p>Actors can also <code>ask</code> other actors questions that will receive replies.</p>
 
-<pre><code class="javascript">actorBob.ask('tom','Are you happy?',function(err,happy){
-  if(err) return console.log('Error Asking Tom:',err);
-  if(happy){
-    console.log('Tom is Happy');
-  }else{
-    console.log('Tom is Not Happy');
-  }
-});
-</code></pre>
+<div class="highlight"><pre><span class="nx">actorBob</span><span class="p">.</span><span class="nx">ask</span><span class="p">(</span><span class="s1">'tom'</span><span class="p">,</span><span class="s1">'Are you happy?'</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">happy</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error Asking Tom:'</span><span class="p">,</span><span class="nx">err</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">happy</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tom is Happy'</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tom is Not Happy'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
 
 <p>The request-reply pattern uses anonymous actors known as <strong>extras</strong>.
 An extra has a limited life span of <code>5000</code> by default.
 If the timeout occurs before a reply is delivered,
 a <code>TIMEOUT</code> error will be send to your callback.</p>
 
-<h1 id="routing">Routing</h1>
+<h1>Routing</h1>
 
 <p>Federation supports inter-process communication,
 and abstracts the details away from the programmer.</p>
@@ -101,23 +132,23 @@ Since messages are addressed to other actors by name,
 the router matches names to URLs.
 Once a match is found, the message is sent to the remote process.</p>
 
-<p><img src="https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png" alt="Routing" title="" /></p>
+<p><img src="https://raw.github.com/jacobgroundwater/federation/assets/export/federation.png" alt="Routing"></p>
 
 <p>Routers have a default local route.
 Any message matching the default route will be delivered locally.
 Additional routes can be defined in a JSON-encoded routes file:</p>
 
-<pre><code class="json">[
-  {
-    "regex": "hadoop/.*",
-    "address": "axon://10.0.1.12/"
-  },
-  {
-    "regex": "mongo/.*",
-    "address": "axon://10.0.1.122/"
-  }
-]
-</code></pre>
+<div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">"regex"</span><span class="p">:</span> <span class="s2">"hadoop/.*"</span><span class="p">,</span>
+    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.12/"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">"regex"</span><span class="p">:</span> <span class="s2">"mongo/.*"</span><span class="p">,</span>
+    <span class="nt">"address"</span><span class="p">:</span> <span class="s2">"axon://10.0.1.122/"</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
 
 <p>Incoming messages are matched in-order against the <code>regex</code> key.
 The first match wins, and the packet is forwarded to the gateway at the destination address.
@@ -125,15 +156,15 @@ The default route will always be matched last.</p>
 
 <p>The easiest way to add a routes file is by setting the <code>table_file</code> key:</p>
 
-<pre><code class="javascript">var federation = require('federation');
-federation.defaults.table_file = process.env.ROUTES_FILE_PATH;
-var director = federation.init().director;
-</code></pre>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">federation</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'federation'</span><span class="p">);</span>
+<span class="nx">federation</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">table_file</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ROUTES_FILE_PATH</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">director</span> <span class="o">=</span> <span class="nx">federation</span><span class="p">.</span><span class="nx">init</span><span class="p">().</span><span class="nx">director</span><span class="p">;</span>
+</pre></div>
 
 <p>See the example in <a href="https://github.com/jacobgroundwater/federation/tree/master/examples/multi-proc">Multi-Proc Example</a> for two-process routing table.
 Routes can be the same, or different hosts.</p>
 
-<h1 id="documentation">Documentation</h1>
+<h1>Documentation</h1>
 
 <p>Comprehensive documentation is kept in the <a href="https://github.com/jacobgroundwater/federation/wiki">wiki</a>.</p>
 
@@ -142,16 +173,48 @@ Feel free to make constructive edits.
 If you are not sure about making a change,
 please ask first on the <a href="https://github.com/jacobgroundwater/federation/issues/new">issue tracker</a>.</p>
 
-<h1 id="todo">Todo</h1>
+<h1>Todo</h1>
 
 <p>The todo list is maintained under the <a href="https://github.com/jacobgroundwater/federation/issues?labels=enhancement&amp;page=1&amp;state=open">issue tracker</a></p>
 
-<h1 id="license">License</h1>
+<h1>License</h1>
 
-<p>Copyright (c) 2013 Jacob Groundwater (groundwater@gmail.com)</p>
+<p>Copyright (c) 2013 Jacob Groundwater (<a href="mailto:groundwater@gmail.com">groundwater@gmail.com</a>)</p>
 
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p></div></div></div></div></body></html>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/jacobgroundwater/federation/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jacobgroundwater/federation/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/jacobgroundwater/federation"></a> is maintained by <a href="https://github.com/jacobgroundwater">jacobgroundwater</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-25329958-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
